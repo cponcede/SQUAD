@@ -1,0 +1,5 @@
+{{extend 'layout.html'}}
+<h1>These are the pretend results for our pretend search XP</h1>
+{{=A('Pretend Restaurant 1', _href=URL('restaurant?name=restaurantOne'))}}
+{{=A('Pretend Restaurant 2', _href=URL('restaurant?name=restaurantTwo'))}}
+{{=A('Pretend Restaurant 3', _href=URL('restaurant?name=restaurantThree'))}}

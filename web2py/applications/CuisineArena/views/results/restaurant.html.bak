@@ -1,0 +1,5 @@
+{{extend 'layout.html'}}
+<h1>This is the View for viewing one restaurant.</h1>
+<br>
+{{=BEAUTIFY(response._vars['message'])}}
+{{=A('Go back to list of results', _href='list')}}
