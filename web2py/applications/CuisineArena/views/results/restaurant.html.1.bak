@@ -1,0 +1,3 @@
+{{extend 'layout.html'}}
+<h1>This is the View for viewing one restaurant.</h1>
+{{=BEAUTIFY(response._vars.message)}}
