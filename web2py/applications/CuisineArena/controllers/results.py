@@ -1,12 +1,26 @@
 # -*- coding: utf-8 -*-
-# try something like
+from yelpsearch import YelpSearch
+
+yelpAPI = YelpSearch()
+
 def list():
     # Inside of session variable should be a Dictionary<String, Double> that maps from cuisine name -> rating
-    # Inside of session should also be location and price preferences
+    # cuisineRatings = session.cuisineRatings
+    
+    # Inside of session should also be location preferences
+    # zipCode = session.zipCode
+    # maxDistance = session.maxDistance
+    
+    # Retrieve price preferences from session
+    # pricePrefs = session.pricePrefs
+    
     # Pass all of the above information to resultsmodel.py to get back a list of restaurants and information about each.
+    # https://github.com/Yelp/yelp-python for querying the Yelp API
+    results = yelpAPI.get_restaurant_list({}, '94305', 25, {})
+        
     # Return that dictionary to results/list.html, which will use this info to fill out the view.
-    return dict(message="This is the view for viewing a list of restaurant results")
-
+    return dict(message="This is the view for viewing a list of restaurant results", search_results = results)
+    
 def restaurant():
     # Message resultsmodel.py to get info on that restaurant
     # Return response dicitonary from resultsmodel.py
