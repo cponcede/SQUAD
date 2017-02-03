@@ -18,21 +18,33 @@ class YelpSearch():
         client = Client(auth)
         return client
 
-    
+    # Queries Yelp API for restaurants that match the provided arguments and returns information about matching restaurants.
+    # Parameters:
+    #     cuisineRatings : dict from String(cuisineName) -> Double(cuisineRating). Used to filter results based on CuisineArena results
+    #     zipCode: String representation of user's zip code
+    #     maxDistance: maximum distance (in meters) that the user wants results fro
+    #     pricePrefs: Dict that looks like: {'$': Bool, '$$': Bool, '$$$': Bool} that is used to determine which price ranges to consider
     def get_restaurant_list(self, cuisineRatings, zipCode, maxDistance, pricePrefs):
-        # Use cuisineRatings, zipCode, maxDistance, and pricePrefs to query Yelp API
         yelp_client = self.authenticate_yelp()
 
-        search_params = {'term': 'restaurants',    # only interested in restaurants
-                         'sort': 2,               # sort results by highest rating
-                         'category_filter': 'chinese,japanese,italian',   # Insert our own cuisines eventually
-                         'radius_filter': 40000,       # max distance (in meters)
-                        }
-        results = yelp_client.search('94305', search_params)
+        category_string = "restaurants,"
+        for cuisine_name in cuisineRatings.keys():
+            category_string = category_string + cuisine_name + ','
+        category_string = category_string[:-1] # remove last comma
+        print category_string
 
-        # Convert results from Yelp API into a list of dictionarys (just returning entire results for now)
+        search_params = {'term': 'restaurants',    # only interested in restaurants
+                         'category_filter': category_string,   # Insert our own cuisines eventually
+                         'radius_filter': maxDistance,       # max distance (in meters)
+                        }
+        results = yelp_client.search(zipCode, search_params)
+
+        # No application of cuisine ratings or price prefs used here yet. 
+        # Just simply returns results for all listed cuisine types, sorted by rating.
         filteredResult = []
         for business in results.businesses:
+            if 'japanese' not in business.categories:
+                continue
             business_info = {}
             business_info['name'] = business.name
             business_info['rating'] = business.rating
