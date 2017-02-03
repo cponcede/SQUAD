@@ -18,7 +18,7 @@ def list():
     # Pass all of the above information to resultsmodel.py to get back a list of restaurants and information about each.
     # Weirdly, Yelp API not filtering categories correctly.
     # https://github.com/Yelp/yelp-python for querying the Yelp API
-    results = yelpAPI.get_restaurant_list({'japanese':9.0,}, '94305', 40000, {'$': True, '$$': False, '$$$': False})
+    results = yelpAPI.get_restaurants('94305', 40000, {'japanese':9.0}, {'$':True, '$$':False, '$$$':False}) # TODO: add arguments for price/location and all that
         
     # Return that dictionary to results/list.html, which will use this info to fill out the view.
     return dict(message="This is the view for viewing a list of restaurant results", search_results = results)
