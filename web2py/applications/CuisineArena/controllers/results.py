@@ -23,6 +23,7 @@ def list():
 
 def restaurant():
     # Get restaurant_id of the clicked on restaurant from the View
+    # restaurant_id = request._vars['id']
 
     # Pass restaurant_id to restaurantsearch.py to get back a dictionary of info about that restaurant
     restaurant_details = restaurant_search.get_restaurant_details('fake_restaurant_id')
