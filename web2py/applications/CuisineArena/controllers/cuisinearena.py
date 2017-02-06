@@ -6,7 +6,7 @@ def arena():
     else:
         if request.vars.done:
             # Hard-coding in dictionary of cuising ratings so I can use them in results.py
-            session.cuisineRatings = {'japanense':0.9, 'chinese':0.7, 'italian': 0.8}
+            session.cuisineRatings = {'japanese':0.9, 'chinese':0.7, 'italian': 0.8}
             redirect(URL('results', 'list'))
         else:
             if request.vars.left:
