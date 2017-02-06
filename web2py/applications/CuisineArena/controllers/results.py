@@ -1,9 +1,11 @@
-# -*- coding: utf-8 -*-
-# try something like
+# factualAPI = factualAPI()
+
 def list():
-    # Inside of session variable should be a Dictionary<String, Double> that maps from cuisine name -> rating
-    # Inside of session should also be location and price preferences
-    # Pass all of the above information to resultsmodel.py to get back a list of restaurants and information about each.
+    zipCode = session.zipCode
+    maxDistance = session.maxDistance
+    pricePrefs = session.pricePrefs
+    cuisineRatings = session.cuisineRatings
+    # results = factualAPI.searchForRestaurants()
     # Return that dictionary to results/list.html, which will use this info to fill out the view.
     return dict(message="This is the view for viewing a list of restaurant results")
 
