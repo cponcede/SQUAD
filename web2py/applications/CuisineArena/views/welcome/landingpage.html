@@ -1,7 +1,19 @@
 {{extend 'layout.html'}}
-<h1>This is the welcome/landingpage.html template</h1>
-<h2>What is your name</h2>
-<form>
-	<input name="name" value="ludacris"> <!-- keyur if you want more user information use these -->
-	<input type="submit">
-</form>
+<head>
+    <link href="{{=URL('static', 'css/welcome.css')}}" rel="stylesheet" type="text/css" />
+    <title>Optimal Pizza</title>
+</head>
+<body>
+    <center>
+        <h1 class="title">Welcome to Optimal Pizza</h1>
+        <br>
+        <img src="../static/images/facebook.png" alt="some_text" style="width:350px; height:350px">
+        <br>
+        <br>
+        <form>
+            <input type="submit" name="signin" value="Sign In">
+            <br>or<br>
+            <input type="submit" name ="signup" value="Sign Up"><br>
+        </form>
+    </center>
+</body>
