@@ -31,7 +31,7 @@ class FoursquareAPI():
             venueInfo = {}
             venueInfo['name'] = venue['name']
             venueInfo['id'] = venue['id']
-            venueInfo['address'] = venue['location']['formattedAddress']
+            venueInfo['address'] = ' --- '.join(venue['location']['formattedAddress'])
             venueInfo['categories'] = [categoryDict['name'] for categoryDict in venue['categories']]
             finalResults.append(venueInfo)
         return finalResults
