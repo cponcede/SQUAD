@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # try something like
-def landingpage(): 
+def landingpage():
+    session.cuisines = ["Indian","Italian","Mexican","Asian_Fusion","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
+
     if request.vars.name:
         #here's where I'm going to put the variables keyur gives me
         #in the form: session.variable_name = request.vars.variable_name
