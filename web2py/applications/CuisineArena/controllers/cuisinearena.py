@@ -15,9 +15,6 @@ def arena():
 
     if not session.first:
         session.first = True
-        session.previousCuisines = ["",""]
-        #base_ELO = 1000
-        #session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
         session.previousCuisines[0] = cuisine1
         session.previousCuisines[1] = cuisine2
         return dict(images = photos, ratings = [], test = "first")
@@ -42,7 +39,6 @@ def arena():
                 return dict(images = photos, ratings = ratings_list, test = chosen_cuisine)
             else:
                 # First time the page is loaded.
-                session.previousCuisines = ["",""]
                 session.previousCuisines[0] = cuisine1
                 session.previousCuisines[1] = cuisine2
                 return dict(images = photos, ratings = [], test = "First")
