@@ -15,16 +15,11 @@ def arena():
 
     if not session.first:
         session.first = True
-        session.previousCuisines = ["",""]
-        #base_ELO = 1000
-        #session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
         session.previousCuisines[0] = cuisine1
         session.previousCuisines[1] = cuisine2
         return dict(images = photos, ratings = [], test = "first")
     else:
         if request.vars.done:
-            # Hard-coding in dictionary of cuising ratings so I can use them in results.py
-            # session.cuisineRatings = {'japanense':0.9, 'chinese':0.7, 'italian': 0.8}
             redirect(URL('results', 'list'))
         else:
             if request.vars:
@@ -43,7 +38,6 @@ def arena():
                 return dict(images = photos, ratings = ratings_list, test = chosen_cuisine)
             else:
                 # First time the page is loaded.
-                session.previousCuisines = ["",""]
                 session.previousCuisines[0] = cuisine1
                 session.previousCuisines[1] = cuisine2
                 return dict(images = photos, ratings = [], test = "First")
