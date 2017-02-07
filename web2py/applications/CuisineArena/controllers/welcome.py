@@ -2,6 +2,8 @@
 # try something like
 def landingpage():
     session.cuisines = ["Indian","Italian","Mexican","Asian_Fusion","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
+    base_ELO = 1500
+    session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
 
     if request.vars.name:
         #here's where I'm going to put the variables keyur gives me

@@ -28,23 +28,16 @@ p{
     </div>
 </div>
 
+<div style="float:left;">
+{{for cuisine, elo in ratings:}}
+    <div>
+        <h5>{{=cuisine}} : {{=int(elo)}}</h5>
+    </div>
+{{pass}}
+</div>
+
 <div style="clear:both; margin-left:200px;">
 <form>
 	<input type="submit" name="done" value="I'm DONE">
 </form>
 </div>
-
-
-
-
-
-<!-- <ul>
-{{for image in images:}}
-<div style="float:left;margin-right:15px;">
-    <form>
-        <input type="image" name = image.title src="{{=URL('download', args=image.file)}}" width="200px" height="150px">
-    </form>
-    <p>{{=image.title}}</p>
-</div>
-{{pass}}
-</ul> -->
