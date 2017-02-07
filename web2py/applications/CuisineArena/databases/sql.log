@@ -53,3 +53,10 @@ CREATE TABLE auth_cas(
     renew CHAR(1)
 );
 success!
+timestamp: 2017-02-05T21:20:00.990869
+CREATE TABLE image(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(512) UNIQUE,
+    file CHAR(512)
+);
+success!

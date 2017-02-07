@@ -118,6 +118,11 @@ auth.settings.reset_password_requires_verification = True
 #       'date','time','datetime','blob','upload', 'reference TABLENAME'
 # There is an implicit 'id integer autoincrement' field
 # Consult manual for more options, validators, etc.
+
+db = DAL("sqlite://storage.sqlite")
+db.define_table('image', Field('title', unique=True), Field('file', 'upload'), format = '%(title)s')
+db.image.title.requires = IS_NOT_IN_DB(db, db.image.title)
+
 #
 # More API examples for controllers:
 #
