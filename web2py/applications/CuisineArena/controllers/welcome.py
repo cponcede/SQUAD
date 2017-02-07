@@ -12,6 +12,9 @@ def signin():
 	if request.vars.username:
 		#TODO: validate username and password
 		session.name = request.vars.username
+    session.pricePrefs = {"$": True, "$$": False, "$$$": False, "$$$$": False}
+    session.zipCode = '94305'
+    session.maxDistanceInMiles = 30
 		redirect(URL('cuisinearena', 'arena'))
 	else:
 		return dict()
@@ -21,6 +24,9 @@ def signup():
 		#TODO:store signup data in database
         #TODO:error checking here or in HTML?
 		session.name = request.vars.username
+    session.pricePrefs = {"$": True, "$$": False, "$$$": False, "$$$$": False}
+    session.zipCode = '94305'
+    session.maxDistanceInMiles = 30
 		redirect(URL('cuisinearena', 'arena'))
 	else:
 		return dict()
