@@ -2,13 +2,10 @@
 <h1>This page currently represents the results from Foursquare for the hard-coded cuisine arena ratings.</h1>
 <ul>
 {{for restaurant in searchResults:}}
+    <a href="{{=URL('restaurant', vars={'id':restaurant['id']})}}">
     <li><b>Name: </b>{{=restaurant['name']}}<br>
         <b>FoursquareId: </b>{{=restaurant['id']}} <br>
         <b>Address: </b>{{=restaurant['address']}} <br>
         <b>Cuisine: </b>{{=restaurant['categories'][0]}}
-    </li><br>{{pass}}
+    </li></a><br>{{pass}}
 </ul>
-<p>
-    Below is the full data that we get back from the Foursquare API if we want to use anything else.
-</p>
-{{=BEAUTIFY(response._vars['searchResults'])}}

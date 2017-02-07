@@ -37,7 +37,16 @@ class FoursquareAPI():
         return finalResults
 
     def getRestaurantDetails(self, factualRestaurantID):
-        # make query to Factual API based on restaurantID to get dictionary of info about this restaurant
-        client = self.getClient()
-        hardcodedRestaurantInfo = {'name': 'Kirshner\'s Cupcakes', 'address': '557 Mayfield Ave, Stanford, CA 94305', 'price':'$$$'}
-        return hardcodedRestaurantInfo
+        restaurantDetails = self.getClient().venues(factualRestaurantID)['venue']
+        result = {}
+        result['name'] = restaurantDetails['name']
+        if ('price' in restaurantDetails.keys()):
+            result['price'] = restaurantDetails['price']['tier']
+        else:
+            result['price'] = 'No price available'
+        result['categories'] = [categoryDict['name'] for categoryDict in restaurantDetails['categories']]
+        result['hours'] = restaurantDetails['hours']
+        result['location'] = restaurantDetails['location']['formattedAddress']
+        result['rating'] = restaurantDetails['rating']
+        result['menuURL'] = restaurantDetails['menu']['url']
+        return result

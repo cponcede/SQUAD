@@ -10,5 +10,4 @@ def list():
 def restaurant():
     restaurantId = request.vars.get('id', None)
     restaurantInfo = foursquareAPI.getRestaurantDetails(restaurantId)
-    msg = "You are viewing results for " + request.vars['name']
-    return dict(message=msg, details=restaurantInfo)
+    return dict(restaurantDetails=restaurantInfo)
