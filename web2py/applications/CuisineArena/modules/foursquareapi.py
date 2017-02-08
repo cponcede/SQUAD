@@ -42,7 +42,6 @@ class FoursquareAPI():
                 venueInfo['url'] = recommendation['venue'].get('url', 'No URL available.')
                 finalResults.append(venueInfo)
         return sorted(finalResults, key=lambda item : item['rating']*cuisineRatings[item['categories'][0]['id']])
-        return finalResults
 
     def getRestaurantDetails(self, factualRestaurantID):
         restaurantDetails = self.getClient().venues(factualRestaurantID)['venue']
