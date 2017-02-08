@@ -25,7 +25,7 @@ class FoursquareAPI():
             categoryString = categoryString + cuisineId + ','
         categoryString = categoryString[:-1]
         searchResults = client.venues.explore(
-            params={'near':locationString, 'radius':maxDistanceMeters, 'categoryId':categoryString})
+            params={'near':locationString, 'radius':maxDistanceMeters, 'categoryId':categoryString, 'price':pricePrefs})
         finalResults = []
         for item in searchResults['groups']:
             for recommendation in item['items']:
@@ -41,7 +41,7 @@ class FoursquareAPI():
                     venueInfo['price'] = recommendation['venue']['price']['tier']
                 venueInfo['url'] = recommendation['venue'].get('url', 'No URL available.')
                 finalResults.append(venueInfo)
-        return sorted(finalResults, key=lambda item : item['rating']*cuisineRatings[item['categories'][0]['id']])
+        return sorted(finalResults, reverse=True, key=lambda item : item['rating']*cuisineRatings.get(item['categories'][0]['id'], 0))
 
     def getRestaurantDetails(self, factualRestaurantID):
         restaurantDetails = self.getClient().venues(factualRestaurantID)['venue']
