@@ -24,16 +24,24 @@ class FoursquareAPI():
         for cuisineId in cuisineRatings.keys():
             categoryString = categoryString + cuisineId + ','
         categoryString = categoryString[:-1]
-        searchResults = client.venues.search(
-            params={'near':locationString, 'intent':'browse', 'radius':maxDistanceMeters, 'categoryId':categoryString})
+        searchResults = client.venues.explore(
+            params={'near':locationString, 'radius':maxDistanceMeters, 'categoryId':categoryString})
         finalResults = []
-        for venue in searchResults['venues']:
-            venueInfo = {}
-            venueInfo['name'] = venue['name']
-            venueInfo['id'] = venue['id']
-            venueInfo['address'] = ' --- '.join(venue['location']['formattedAddress'])
-            venueInfo['categories'] = [categoryDict['name'] for categoryDict in venue['categories']]
-            finalResults.append(venueInfo)
+        for item in searchResults['groups']:
+            for recommendation in item['items']:
+                venueInfo = {}
+                venueInfo['name'] = recommendation['venue']['name']
+                venueInfo['rating'] = recommendation['venue']['rating']
+                venueInfo['address'] = ' '.join(recommendation['venue']['location']['formattedAddress'])
+                venueInfo['id'] = recommendation['venue']['id']
+                venueInfo['categories'] = [{'name':category['name'], 'id':category['id']} for category in recommendation['venue']['categories']]
+                if 'price' not in recommendation['venue'].keys():
+                    venueInfo['price'] = 'No price available'
+                else:
+                    venueInfo['price'] = recommendation['venue']['price']['tier']
+                venueInfo['url'] = recommendation['venue'].get('url', 'No URL available.')
+                finalResults.append(venueInfo)
+        return sorted(finalResults, key=lambda item : item['rating']*cuisineRatings[item['categories'][0]['id']])
         return finalResults
 
     def getRestaurantDetails(self, factualRestaurantID):
@@ -45,8 +53,11 @@ class FoursquareAPI():
         else:
             result['price'] = 'No price available'
         result['categories'] = [categoryDict['name'] for categoryDict in restaurantDetails['categories']]
-        result['hours'] = restaurantDetails['hours']
+        result['hours'] = restaurantDetails.get('hours', 'No hours available')
         result['location'] = restaurantDetails['location']['formattedAddress']
         result['rating'] = restaurantDetails['rating']
-        result['menuURL'] = restaurantDetails['menu']['url']
+        if 'menu' not in restaurantDetails:
+            result['menuURL'] = 'No menu available'
+        else:
+            result['menuURL'] = restaurantDetails['menu']['url']
         return result
