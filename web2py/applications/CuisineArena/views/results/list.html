@@ -1,4 +1,7 @@
 {{extend 'layout.html'}}
+<head>
+    <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
+</head>
 <h1>This page currently represents the results from Foursquare for the hard-coded cuisine arena ratings.</h1>
 <ul>
 {{for restaurant in searchResults:}}

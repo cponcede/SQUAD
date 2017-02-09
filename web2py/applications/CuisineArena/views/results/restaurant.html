@@ -1,4 +1,7 @@
 {{extend 'layout.html'}}
+<head>
+    <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
+</head>
 <h1>This is the View for viewing one restaurant.</h1>
 {{=BEAUTIFY(response._vars['restaurantDetails'])}}
 {{=A('Go back to list of results', _href='list')}}
