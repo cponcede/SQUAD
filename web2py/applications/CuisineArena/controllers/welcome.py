@@ -12,7 +12,7 @@ def signin():
     if request.vars.username:
         #TODO: validate username and password
         session.name = request.vars.username
-        session.pricePrefs = {"$": True, "$$": False, "$$$": False, "$$$$": False}
+        session.pricePrefs = '1,2'
         session.zipCode = '94305'
         session.maxDistanceInMiles = 30
         session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
