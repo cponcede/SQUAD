@@ -25,7 +25,7 @@ class FoursquareAPI():
             categoryString = categoryString + cuisineId + ','
         categoryString = categoryString[:-1]
         searchResults = client.venues.explore(
-            params={'near':locationString, 'radius':maxDistanceMeters, 'categoryId':categoryString, 'price':pricePrefs})
+            params={'near':locationString, 'radius':maxDistanceMeters, 'categoryId':categoryString, 'section': 'food', 'price':pricePrefs})
         finalResults = []
         for item in searchResults['groups']:
             for recommendation in item['items']:
