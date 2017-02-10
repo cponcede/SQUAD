@@ -20,7 +20,14 @@ def arena():
         return dict(images = photos, ratings = [], test = "first")
     else:
         if request.vars.done:
-            session.cuisineRatings = {'4bf58dd8d48988d111941735':0.9, '4bf58dd8d48988d145941735':0.7, '4bf58dd8d48988d110941735': 0.8}
+            finalRatings = {}
+            minRating = session.cuisineRatings[min(session.cuisineRatings, key=session.cuisineRatings.get)]
+            maxRating = session.cuisineRatings[max(session.cuisineRatings, key=session.cuisineRatings.get)]
+            for key in session.cuisineRatings.keys():
+                row = db(db.image.title == key).select(db.image.foursquareId)
+                finalRatings[row[0]['foursquareId']] = (1.0*session.cuisineRatings[key] - 1.0*minRating)/(1.0*maxRating - 1.0*minRating)
+            # Only show results for cuisines in the top 25% of results. (We can change this number later based on results)
+            session.finalRatings = dict((k, v) for k, v in finalRatings.items() if v > 0.75)
             redirect(URL('results', 'list'))
         else:
             if request.vars:
