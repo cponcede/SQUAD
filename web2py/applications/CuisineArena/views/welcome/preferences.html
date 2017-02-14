@@ -1,0 +1,19 @@
+{{extend 'layout.html'}}
+<head>
+    <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
+</head>
+<h1>Please enter your location and price preferences below before beginning.</h1>
+<h4>{{=error_msg}}</h4>
+<form>
+	Zip code:<br>
+    <input type="text" name="zipcode" maxlength="5"><br>
+    Radius to search (in miles):<br>
+    <input type="number" name="radius"><br>
+    Price tiers: <br>
+    <input type="checkbox" name="price" id="price1" value="1"> <label for="price1">$</label>
+    <input type="checkbox" name="price" id="price2" value="2"> <label for="price2">$$</label>
+    <input type="checkbox" name="price" id="price3" value="3"> <label for="price3">$$$</label>
+    <input type="checkbox" name="price" id="price4" value="4"> <label for="price4">$$$$</label>
+    <br>
+	<input type="submit">
+</form>
