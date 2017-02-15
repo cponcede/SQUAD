@@ -6,9 +6,15 @@ from copy import deepcopy
 
 def arena():
     # Hard-coded in the random cuisine to serve to the user. Eventually, use the existing information to choose cuisines to serve.
+    idealMatchupNumber = 20
+    matchupPercent = str(float(session.numMatchups)/idealMatchupNumber*100)[0:2] + "%"
+    if matchupPercent[-2] == ".":
+        matchupPercent = matchupPercent[0] + matchupPercent[-1]
+    if idealMatchupNumber <= session.numMatchups:
+        matchupPercent = "100%"
     cuisine1 = random.choice(session.cuisines)
     cuisine2 = random.choice(session.cuisines)
-    while (cuisine2 == cuisine1 or cuisine2 == session.previousCuisines[0] or cuisine2 == session.previousCuisines[1]):
+    while (cuisine2 == cuisine1 or cuisine2 in session.previousCuisines):
         cuisine2 = random.choice(session.cuisines)
 
     photos = db((db.image.title == cuisine1) | (db.image.title == cuisine2)).select(orderby=db.image.title)
@@ -17,7 +23,7 @@ def arena():
         session.first = True
         session.previousCuisines[0] = cuisine1
         session.previousCuisines[1] = cuisine2
-        return dict(images = photos, ratings = [], test = "first")
+        return dict(images = photos, ratings = [], matchupProgress = (matchupPercent, session.numMatchups), test = "first")
     else:
         if request.vars.done:
             finalRatings = {}
@@ -31,6 +37,7 @@ def arena():
             redirect(URL('results', 'list'))
         else:
             if request.vars:
+                session.numMatchups = session.numMatchups + 1
                 chosen_cuisine = request.vars.keys()[0]
                 if ".y" in chosen_cuisine or ".x" in chosen_cuisine:
                     chosen_cuisine = chosen_cuisine[:-2]
@@ -43,12 +50,12 @@ def arena():
 
                 session.previousCuisines[0] = cuisine1
                 session.previousCuisines[1] = cuisine2
-                return dict(images = photos, ratings = ratings_list, test = chosen_cuisine)
+                return dict(images = photos, ratings = ratings_list, matchupProgress = (matchupPercent, session.numMatchups), test = chosen_cuisine)
             else:
                 # First time the page is loaded.
                 session.previousCuisines[0] = cuisine1
                 session.previousCuisines[1] = cuisine2
-                return dict(images = photos, ratings = [], test = "First")
+                return dict(images = photos, ratings = [], matchupProgress = (matchupPercent, session.numMatchups), test = "First")
 
 def updateElo(cuisine1,cuisine2, winner):
     K = 32

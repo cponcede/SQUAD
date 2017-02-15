@@ -8,36 +8,85 @@ p{
 </style>
 </head>
 
-<h1>Enter the CUISINE ARENA</h1>
-<center>
-<div class="image_side">
-    <div style="float:left;margin-right:15px;">
-        <form>
-          <input type="image" name = {{=images[0].title}} src="{{=URL('download', args=images[0].file)}}" width="300px" height="225px">
-        </form>
-        <p>{{=images[0].title}}</p>
+
+<div class="row">
+    <div class="col s12">
+        <center>
+            <span class="flow-text">
+                <h1>Enter the CUISINE ARENA</h1>
+            </span>
+        </center>
     </div>
-    <div style="float:left;margin-top:70px;margin-right:15px;">
-        <p><h1> vs. </h1><p>
-    </div>
-    <div style="float:left;margin-right:15px;">
-        <form>
-          <input type="image" name = {{=images[1].title}} src="{{=URL('download', args=images[1].file)}}" width="300px" height="225px">
-        </form>
-        <p>{{=images[1].title}}</p>
-    </div>
-</div>
-</center>
-<div style="float:left;">
-{{for cuisine, elo in ratings:}}
-    <div>
-        <h5>{{=cuisine}} : {{=int(elo)}}</h5>
-    </div>
-{{pass}}
 </div>
 
-<div style="clear:both; margin-left:300px;">
-<form>
-	<input type="submit" name="done" value="I'm DONE">
-</form>
+<div class="row">
+    <div class="col s5">
+        <center>
+            <form>
+              <input type="image" name = {{=images[0].title}} src="{{=URL('download', args=images[0].file)}}" width="300px" height="225px">
+            </form>
+        </center>
+    </div>
+    <div class="col s2";height: 90px;line-height: 90px;>
+        <center>
+            <p><h1>vs.</h1><p>
+        </center>
+    </div>
+    <div class="col s5">
+        <center>
+            <form>
+              <input type="image" name = {{=images[1].title}} src="{{=URL('download', args=images[1].file)}}" width="300px" height="225px">
+            </form>
+        </center>
+    </div>
 </div>
+
+<div class="row">
+    <div class="col s5">
+        <center>
+            <h5>{{=images[0].title}}</h5>
+        </center>
+    </div>
+    <div class="col s5 offset-s2">
+        <center>
+            <h5>{{=images[1].title}}</h5>
+        </center>
+    </div>
+</div>
+
+<div class="row">
+    <center>
+        <div class="col s12">
+            <form>
+                <input class = "btn-large" type="submit" name="done" value="I'm DONE">
+            </form>
+        </div>
+    </center>
+</div>
+
+<!-- <div class="box-1">
+  <div class="btn btn-one">
+    <span>HOVER ME</span>
+  </div>
+</div> -->
+
+<div class="progress">
+  <div class="determinate" style="width: {{=matchupProgress[0]}}"></div>
+</div>
+
+<table>
+    <thead>
+        <tr>
+          <th data-field="Cuisine">Cuisine</th>
+          <th data-field="ELO">ELO</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{for cuisine, elo in ratings:}}
+        <tr>
+            <td> {{=cuisine}} </td>
+            <td> {{=int(elo)}} </td>
+        </tr>
+        {{pass}}
+    </tbody>
+</table>
