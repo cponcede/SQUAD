@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # try something like
 def landingpage():
+    session.numMatchups = 0
     if request.vars.signin:
         redirect(URL('welcome', 'signin'))
     elif request.vars.signup:
