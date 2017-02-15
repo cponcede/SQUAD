@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # try something like
 def landingpage():
+    session.numMatchups = 0
     if request.vars.signin:
         redirect(URL('welcome', 'signin'))
     elif request.vars.signup:
@@ -14,7 +15,7 @@ def signin():
         if user:
             if user.password == request.vars.password:
                 session.name = request.vars.username
-                session.cuisines = ["Indian","Italian","Mexican","Asian_Fusion","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
+                session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
                 base_ELO = 1500
                 session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
                 session.previousCuisines = ["",""]
@@ -36,7 +37,7 @@ def signup():
         else:
             db.commit()
             session.name = request.vars.username
-            session.cuisines = ["Indian","Italian","Mexican","Asian_Fusion","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
+            session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
             base_ELO = 1500
             session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
             session.previousCuisines = ["",""]
