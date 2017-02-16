@@ -123,8 +123,8 @@ db = DAL("sqlite://storage.sqlite")
 db.define_table('image', Field('title', unique=True), Field('file', 'upload'), Field('foursquareId'), format = '%(title)s %(foursquareId)')
 db.image.title.requires = IS_NOT_IN_DB(db, db.image.title)
 
-db.define_table('person', Field('username', unique=True, notnull=True), Field('password', notnull=True), format = '%(user)s')
-# db.person.drop()
+db.define_table('user', Field('username', unique=True, notnull=True), Field('password', notnull=True), format = '%(user)s')
+#db.person.drop()
 # More API examples for controllers:
 #
 # >>> db.mytable.insert(myfield='value')
