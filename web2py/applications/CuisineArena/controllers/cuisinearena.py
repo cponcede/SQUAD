@@ -32,7 +32,7 @@ def arena():
             for key in session.cuisineRatings.keys():
                 row = db(db.image.title == key).select(db.image.foursquareId, db.image.title)
                 finalRatings[row[0]['foursquareId']] = (row[0]['title'], (1.0*session.cuisineRatings[key] - 1.0*minRating)/(1.0*maxRating - 1.0*minRating))
-            # Only show results for cuisines in the top 20% of results. (We can change this number later based on results)
+            # Only show results for cuisines in the top 25% of results. (We can change this number later based on results)
             session.finalRatings = dict((k, v) for k, v in finalRatings.items() if v[1] > 0.75)
             redirect(URL('results', 'list'))
         else:
