@@ -12,10 +12,10 @@ def arena():
         matchupPercent = matchupPercent[0] + matchupPercent[-1]
     if idealMatchupNumber <= session.numMatchups:
         matchupPercent = "100%"
-    cuisine1 = random.choice(session.cuisines)
-    cuisine2 = random.choice(session.cuisines)
-    while (cuisine2 == cuisine1 or cuisine2 in session.previousCuisines):
-        cuisine2 = random.choice(session.cuisines)
+
+    cuisine1, cuisine2 = cuisineServer()
+    session.cuisineCounts[cuisine1] = session.cuisineCounts[cuisine1] + 1
+    session.cuisineCounts[cuisine2] = session.cuisineCounts[cuisine2] + 1
 
     photos = db((db.image.title == cuisine1) | (db.image.title == cuisine2)).select(orderby=db.image.title)
 
@@ -56,6 +56,60 @@ def arena():
                 session.previousCuisines[0] = cuisine1
                 session.previousCuisines[1] = cuisine2
                 return dict(images = photos, ratings = [], matchupProgress = (matchupPercent, session.numMatchups), test = "First")
+
+def cuisineServer():
+    #print(session.cuisineCounts)
+    zeroCuisines = [cuisine for cuisine,count in session.cuisineCounts.items() if count == 0]
+    #print(zeroCuisines)
+    cuisine1 = ""
+    cuisine2 = ""
+    if len(zeroCuisines) == 1:
+        cuisine1 = zeroCuisines[0]
+        cuisine2 = random.choice(session.cuisines)
+        while (cuisine2 == cuisine1 or cuisine2 in session.previousCuisines):
+            cuisine2 = random.choice(zeroCuisines)
+    elif len(zeroCuisines) >= 2:
+        cuisine1 = random.choice(zeroCuisines)
+        cuisine2 = random.choice(zeroCuisines)
+        while (cuisine2 == cuisine1 or cuisine2 in session.previousCuisines):
+            cuisine2 = random.choice(zeroCuisines)
+
+    if cuisine1 == "":
+        adjElo = {cuisine:(elo-min(session.cuisineRatings.values())) for cuisine,elo in session.cuisineRatings.items()}
+        minCuisine = [cuisine for cuisine,elo in adjElo.items() if elo == 0.0][0]
+        adjElo[minCuisine] = adjElo[minCuisine] + 10.0
+        adjElo = [(cuisine,(elo/sum(adjElo.values()))) for cuisine,elo in adjElo.items()]
+
+        cdfElo = []
+        eloSum = 0.0
+        for cuisine, elo in adjElo:
+            cdfElo.append((cuisine, eloSum + elo))
+            eloSum = eloSum + elo
+        cdfElo = sorted(cdfElo, key=lambda x: x[1])
+        randCuisineFloat = random.uniform(0, 1)
+        #print(cdfElo)
+
+        for cuisine, elo in cdfElo:
+            if randCuisineFloat <= elo:
+                cuisine1 = cuisine
+                break
+
+        randCuisineFloat2 = random.uniform(0, 1)
+        for cuisine, elo in cdfElo:
+            if randCuisineFloat2 <= elo:
+                cuisine2 = cuisine
+                break
+
+        while (cuisine2 == cuisine1 or cuisine2 in session.previousCuisines):
+            randCuisineFloat2 = random.uniform(0, 1)
+            for cuisine, elo in cdfElo:
+                if randCuisineFloat2 <= elo:
+                    cuisine2 = cuisine
+                    break
+
+        #print(randCuisineFloat, cuisine1, randCuisineFloat2, cuisine2)
+
+    return (cuisine1, cuisine2)
 
 def updateElo(cuisine1,cuisine2, winner):
     K = 32
