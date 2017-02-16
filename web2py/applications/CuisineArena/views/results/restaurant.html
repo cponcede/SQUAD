@@ -2,6 +2,45 @@
 <head>
     <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
 </head>
-<h1>This is the View for viewing one restaurant.</h1>
-{{=BEAUTIFY(response._vars['restaurantDetails'])}}
-{{=A('Go back to list of results', _href='list')}}
+<!-- {{=BEAUTIFY(response._vars['restaurantDetails'])}}
+ -->
+
+<div class="row">
+    <div class="col s12"> <!--only works on laptop now-->
+	    <div class="card">
+<!--             <div class="card-image">
+              <img src="images/sample-1.jpg">
+              <span class="card-title">RESTAURANT IMAGE GOES HERE</span>
+            </div> -->
+            <div class="card-content">
+              <h4>{{=response._vars['restaurantDetails']['name']}}</h4>
+              <ul>
+              <li><a href="{{=response._vars['restaurantDetails']['menuURL']}}">Menu</a></li>
+              <li>Price: 
+              	{{if response._vars['restaurantDetails']['price'] == 1:}}$
+              	{{elif response._vars['restaurantDetails']['price'] == 2:}}$$
+              	{{elif response._vars['restaurantDetails']['price'] == 3:}}$$$
+              	{{elif response._vars['restaurantDetails']['price'] == 4:}}$$$$
+              	{{else:}}
+              	{{pass}}
+              </li>
+              <li>Rating: {{=response._vars['restaurantDetails']['rating']}}</li>
+              <li>Days Open: {{=response._vars['restaurantDetails']['hours']['timeframes'][0]['days']}}</li>
+              <li>
+              	{{if response._vars['restaurantDetails']['hours']['isOpen']:}} Open Now
+              	{{else:}}Closed Now
+              	{{pass}}
+              </li>
+              <li>Categories: 
+                {{for cat in response._vars['restaurantDetails']['categories']:}}
+                {{=cat}}
+                {{pass}}
+              </li>
+              </ul>
+            </div>
+            <div class="card-action">
+              <a href="{{=URL('list')}}">Back to results</a>
+            </div>
+        </div>
+    </div>
+</div>
