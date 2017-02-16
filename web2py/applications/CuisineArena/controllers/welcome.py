@@ -18,6 +18,7 @@ def signin():
                 session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
                 base_ELO = 1500
                 session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
+                session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
                 session.previousCuisines = ["",""]
                 redirect(URL('welcome', 'preferences'))
             else:
@@ -40,6 +41,7 @@ def signup():
             session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
             base_ELO = 1500
             session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
+            session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
             session.previousCuisines = ["",""]
             redirect(URL('welcome', 'preferences'))
     else:
