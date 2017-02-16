@@ -2,25 +2,36 @@
 <head>
     <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
 </head>
-<h1>This page contains the results of your personalized search</h1>
-<ul>
-{{for restaurant in searchResults:}}
-    <a href="{{=URL('restaurant', vars={'id':restaurant['id']})}}">
-    <li><b>Name: </b>{{=restaurant['name']}}<br>
-        <b>FoursquareId: </b>{{=restaurant['id']}} <br>
-        <b>Address: </b>{{=restaurant['address']}} <br>
-        <b>Cuisine: </b>{{=restaurant['categories'][0]['name']}} <br>
-        <b>Rating: </b>{{=restaurant['rating']}} <br>
-        <b>Our Personalized Rating: </b> {{=restaurant['ourRating']}} <br>
-        <b>Price Tier: </b>{{=restaurant['price']}} <br>
-        <b>URL: </b>{{=restaurant['url']}} <br>
-    </li></a><br>{{pass}}
-</ul>
-<h1>
+<body>
+    <div style="width:100%">
+        <div style="width: 450px; float: left;">
+            <h2>Your Top Cuisines:</h2><br>
+                {{for key in session.finalRatings.keys():}}<h3>{{=session.finalRatings[key][0]}}</h3><br>{{pass}}
+        </div>
+        <div style="margin-left: 470px;">
+            <ol>
+            {{for restaurant in searchResults:}}
+                <a href="{{=URL('restaurant', vars={'id':restaurant['id']})}}">
+                    <li>
+                        {{=restaurant['name']}}<br>
+                        {{=restaurant['address']}} <br>
+                        {{=restaurant['rating']}} Stars, {{=restaurant['categories'][0]['name']}}, <br>
+                        Price:{{=restaurant['price']}}/4<br>
+                        <hr>
+                        <!-- <b>URL: </b>{{=restaurant['url']}} <br>
+                        <b>Our Personalized Rating: </b> {{=restaurant['ourRating']}} <br>
+                        <b>FoursquareId: </b>{{=restaurant['id']}} <br> -->
+                    </li>
+                </a><br>{{pass}}
+            </ol>
+        </div>
+    </div>
+</body>
+<!-- <h1>
      For debugging purposes, below are the cuisine ratings.
 </h1>
 {{=cuisineRatings}}
 <h1>
     Also for debugging purposes, the normalized rankings that made the top 25%.
 </h1>
-{{=session.finalRatings}}
+{{=session.finalRatings}} -->
