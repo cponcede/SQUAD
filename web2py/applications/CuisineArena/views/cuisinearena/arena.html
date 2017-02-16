@@ -19,19 +19,19 @@
     <div class="col s5">
         <center>
             <form>
-              <input type="image" name = {{=images[0].title}} src="{{=URL('download', args=images[0].file)}}" width="300px" height="225px">
+              <input type="image" name = {{=images[0].title}} src="{{=URL('download', args=images[0].file)}}" width="450px" height="338px">
             </form>
         </center>
     </div>
-    <div class="col s2";height: 90px;line-height: 90px;>
-        <center>
-            <p><h1>vs.</h1><p>
-        </center>
+    <div class="col s2">
+        <div style = "margin-top: 150px; margin-left: 55px;">
+            <h1>vs.</h1>
+        </div>
     </div>
     <div class="col s5">
         <center>
             <form>
-              <input type="image" name = {{=images[1].title}} src="{{=URL('download', args=images[1].file)}}" width="300px" height="225px">
+              <input type="image" name = {{=images[1].title}} src="{{=URL('download', args=images[1].file)}}" width="450px" height="338px">
             </form>
         </center>
     </div>
@@ -54,7 +54,7 @@
     <center>
         <div class="col s12">
             <form>
-                <input class = "btn-large" type="submit" name="done" value="I'm DONE">
+                <input class = "btn btn-one" type="submit" name="done" value="I'm DONE">
             </form>
         </div>
     </center>
@@ -70,19 +70,52 @@
   <div class="determinate" style="width: {{=matchupProgress[0]}}"></div>
 </div>
 
-<table>
-    <thead>
-        <tr>
-          <th data-field="Cuisine">Cuisine</th>
-          <th data-field="ELO">ELO</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{for cuisine, elo in ratings:}}
-        <tr>
-            <td> {{=cuisine}} </td>
-            <td> {{=int(elo)}} </td>
-        </tr>
-        {{pass}}
-    </tbody>
-</table>
+<div class="row">
+        <div class="col s12">
+            <span>      </span>
+        </div>
+</div>
+
+<div class="row">
+    <div class="col s12">
+        <center>
+            <button onclick="myFunction()">Toggle ELO</button>
+        </center>
+    </div>
+</div>
+
+<script>
+function myFunction() {
+    var x = document.getElementById('myDIV');
+    if (x.style.display === 'none') {
+        x.style.display = 'block';
+    } else {
+        x.style.display = 'none';
+    }
+}
+</script>
+
+<div class="row">
+    <div class="col s4 offset-s4">
+        <div id="myDIV" style="display:none;">
+            <center>
+                <table class = "bordered striped highlight">
+                    <thead>
+                        <tr>
+                          <th data-field="Cuisine">Cuisine</th>
+                          <th data-field="ELO">ELO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{for cuisine, elo in ratings:}}
+                        <tr>
+                            <td> {{=cuisine}} </td>
+                            <td> {{=int(elo)}} </td>
+                        </tr>
+                        {{pass}}
+                    </tbody>
+                </table>
+            </center>
+        </div>
+    </div>
+</div>
