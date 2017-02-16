@@ -1,5 +1,5 @@
 (dp1
-S'foursquareid'
+S'file'
 p2
 (dp3
 S'length'
@@ -10,7 +10,7 @@ p5
 I00
 sS'sortable'
 p6
-I4
+I3
 sS'sql'
 p7
 S'CHAR(512)'
@@ -20,7 +20,7 @@ p9
 I00
 sS'type'
 p10
-S'string'
+S'upload'
 p11
 ssS'id'
 p12
@@ -39,7 +39,7 @@ I00
 sg10
 S'id'
 p15
-ssS'file'
+ssS'foursquareid'
 p16
 (dp17
 g4
@@ -47,14 +47,14 @@ I512
 sg5
 I00
 sg6
-I3
+I4
 sg7
 S'CHAR(512)'
 p18
 sg9
 I00
 sg10
-S'upload'
+S'string'
 p19
 ssS'title'
 p20
@@ -71,5 +71,5 @@ p22
 sg9
 I00
 sg10
-g11
+g19
 ss.
