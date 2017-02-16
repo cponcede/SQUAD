@@ -2,7 +2,7 @@
 <head>
     <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
 </head>
-<h1>This page currently represents the results from Foursquare for the hard-coded cuisine arena ratings.</h1>
+<h1>This page contains the results of your personalized search</h1>
 <ul>
 {{for restaurant in searchResults:}}
     <a href="{{=URL('restaurant', vars={'id':restaurant['id']})}}">
@@ -11,6 +11,7 @@
         <b>Address: </b>{{=restaurant['address']}} <br>
         <b>Cuisine: </b>{{=restaurant['categories'][0]['name']}} <br>
         <b>Rating: </b>{{=restaurant['rating']}} <br>
+        <b>Our Personalized Rating: </b> {{=restaurant['ourRating']}}
         <b>Price Tier: </b>{{=restaurant['price']}} <br>
         <b>URL: </b>{{=restaurant['url']}} <br>
     </li></a><br>{{pass}}
