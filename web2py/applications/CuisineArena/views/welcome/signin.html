@@ -2,12 +2,13 @@
 <head>
     <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
 </head>
-<h1>This is the welcome/signin.html template</h1>
+<h1>Sign In</h1>	
+<h4>
+{{if error:}}{{=message}}{{pass}}
+</h4>
 <form>
-	Username:<br>
-    <input type="text" name="username" value="MDiggity" required ><br>
-    Password:<br>
-    <input type="text" name="password" value="iluvgoofy" required ><br>
+    <input type="text" name="username" placeholder="Username" required><br>
+    <input type="text" name="password" placeholder="Password" required><br>
+    <input type="hidden" name="submited" value="True">
 	<input type="submit">
 </form>
-{{=BEAUTIFY(response._vars)}}

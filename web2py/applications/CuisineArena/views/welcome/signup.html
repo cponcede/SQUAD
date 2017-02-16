@@ -2,20 +2,17 @@
 <head>
     <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
 </head>
-<h1>This is the welcome/signup.html template</h1>
+<h1>Sign Up</h1>    
+<h4>
+{{if error:}}{{=message}}{{pass}}
+</h4>
 <form>
-	Username:<br>
     <input type="text" name="username" placeholder="Username"><br>
-    Password:<br>
-    <input type="text" name="password" value="iluvgoofy"><br>
-    Confirm Password:<br>
-    <input type="text" name="confirmation" value="iluvgoofy"><br>
-    First name:<br>
-    <input type="text" name="firstname" value="Mickey"><br>
-    Last name:<br>
-    <input type="text" name="lastname" value="Mouse"><br>
-    E-mail:<br>
-    <input type="text" name="email" value="example@gmail.com"><br>
-	<input type="submit">
+    <input type="text" name="password" placeholder="Password"><br>
+    <input type="text" name="confirmation" placeholder="Confirm Password"><br>
+    <input type="text" name="firstname" placeholder="First Name"><br>
+    <input type="text" name="lastname" placeholder="Last Name"><br>
+    <input type="text" name="email" placeholder="E-Mail"><br>
+	<input type="hidden" name="submited" value="True">
+    <input type="submit">
 </form>
-{{=BEAUTIFY(response._vars)}}

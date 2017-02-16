@@ -10,7 +10,7 @@ def landingpage():
         return dict()
 
 def signin():
-    if request.vars.username:
+    if request.vars.submited:
         user = db.user(db.user.username == request.vars.username)
         if user:
             if user.password == request.vars.password:
@@ -21,19 +21,22 @@ def signin():
                 session.previousCuisines = ["",""]
                 redirect(URL('welcome', 'preferences'))
             else:
-                return dict(message='Password is incorrect', rows=db().select(db.user.ALL), user=user, password=user.password) #right now just returns to signin page
+                return dict(error=True, message='Password is incorrect', rows=db().select(db.user.ALL), user=user, password=user.password) #right now just returns to signin page
         else:
-            return dict(message='No such user', rows=db().select(db.user.ALL)) #right now just returns to singin page
+            return dict(error=True, message='No such user', rows=db().select(db.user.ALL)) #right now just returns to singin page
     else:
-        return dict()
+        return dict(error=False)
 
 def signup():
-    if request.vars.username:
+    if request.vars.submited:
+        validated, message = validateSignUp(request.vars)
+        if not validated:
+            return dict(error=True, message=message)
         try:
             db.user.insert(username=request.vars.username, password=request.vars.password)
         except Exception, e:
             db.rollback()
-            return dict(message='Invalid SignUp', exception = e, rows=db().select(db.user.ALL)) #right now this just returns to signup maybe should change
+            return dict(error=True, message='Invalid SignUp DATABASE FAILED', exception = e, rows=db().select(db.user.ALL)) #right now this just returns to signup maybe should change
         else:
             db.commit()
             session.name = request.vars.username
@@ -43,7 +46,21 @@ def signup():
             session.previousCuisines = ["",""]
             redirect(URL('welcome', 'preferences'))
     else:
-        return dict()
+        return dict(error=False)
+
+def validateSignUp(vars):
+    if len(vars.username) == 0:
+        return False, "Username can't be empty"
+    elif len(vars.password) == 0:
+        return False, "Password can't be empty"
+    elif vars.password != vars.confirmation:
+        return False, "Password does not match confirmation password"
+    elif len(vars.firstname) == 0:
+        return False, "First Name can't be empty"
+    elif len(vars.lastname) == 0:
+        return False, "Laste Name can't be empty"
+    else:
+        return True, ""
 
 def preferences():
     if request.vars.price or request.vars.zipcode or request.vars.radius:
