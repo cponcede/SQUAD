@@ -12,36 +12,33 @@ class FoursquareAPI():
         client_secret='01WETIEETTKES04BBHJ2DKPUCXDTVNVZKSHNZPA3SQF4YI3Q')
         return client
 
-    # TODO: Figure out how to incorporate price into this search. Currently I ignore it.
-    # TODO: You can only get a restaurant's price and rating by searching that individual restaurant. 
-    # I think we can work with this though if we design our UI well.
     def searchForRestaurants(self, zipCode, maxDistanceMiles, pricePrefs, cuisineRatings):
         client = self.getClient()
         locationString = zipCode + ', US'
         maxDistanceMeters = str(maxDistanceMiles*1609.34)
-        # Need to create a way to associate each cuisine name with its foursquare id
         categoryString = ""
         for cuisineId in cuisineRatings.keys():
             categoryString = categoryString + cuisineId + ','
         categoryString = categoryString[:-1]
         searchResults = client.venues.explore(
-            params={'near':locationString, 'radius':maxDistanceMeters, 'categoryId':categoryString, 'section': 'food', 'price':pricePrefs})
+            params={'near':locationString, 'radius':maxDistanceMeters, 'categoryId':categoryString, 'price':pricePrefs})
         finalResults = []
         for item in searchResults['groups']:
             for recommendation in item['items']:
                 venueInfo = {}
-                venueInfo['name'] = recommendation['venue']['name']
-                venueInfo['rating'] = recommendation['venue']['rating']
-                venueInfo['address'] = ' '.join(recommendation['venue']['location']['formattedAddress'])
+                venueInfo['name'] = recommendation['venue'].get('name', 'No name available')
+                venueInfo['rating'] = recommendation['venue'].get('rating', 'No rating available')
+                venueInfo['address'] = ' '.join(recommendation['venue']['location'].get('formattedAddress', ['No address available']))
                 venueInfo['id'] = recommendation['venue']['id']
-                venueInfo['categories'] = [{'name':category['name'], 'id':category['id']} for category in recommendation['venue']['categories']]
+                venueInfo['categories'] = [{'name':category['name'], 'id':category['id']} for category in recommendation['venue'].get('categories', [])]
                 if 'price' not in recommendation['venue'].keys():
                     venueInfo['price'] = 'No price available'
                 else:
                     venueInfo['price'] = recommendation['venue']['price']['tier']
                 venueInfo['url'] = recommendation['venue'].get('url', 'No URL available.')
+                venueInfo['ourRating'] = recommendation['venue'].get('rating', 0) * cuisineRatings.get(venueInfo['categories'][0]['id'], [0, 0])[1]
                 finalResults.append(venueInfo)
-        return sorted(finalResults, reverse=True, key=lambda item : item['rating']*cuisineRatings.get(item['categories'][0]['id'], 0))
+        return sorted(finalResults, reverse=True, key=lambda item : item['ourRating'])
 
     def getRestaurantDetails(self, factualRestaurantID):
         restaurantDetails = self.getClient().venues(factualRestaurantID)['venue']
