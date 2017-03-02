@@ -13,6 +13,7 @@ class FoursquareAPI():
         return client
 
     def searchForRestaurants(self, zipCode, maxDistanceMiles, pricePrefs, cuisineRatings):
+        print("searching..")
         client = self.getClient()
         locationString = zipCode + ', US'
         maxDistanceMeters = str(maxDistanceMiles*1609.34)
@@ -20,8 +21,12 @@ class FoursquareAPI():
         for cuisineId in cuisineRatings.keys():
             categoryString = categoryString + cuisineId + ','
         categoryString = categoryString[:-1]
-        searchResults = client.venues.explore(
+        try:
+            searchResults = client.venues.explore(
             params={'near':locationString, 'radius':maxDistanceMeters, 'categoryId':categoryString, 'price':pricePrefs})
+        except:
+            return []
+        print searchResults
         finalResults = []
         for item in searchResults['groups']:
             for recommendation in item['items']:
