@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-# try something like
+import re
+
 def landingpage():
     session.numMatchups = 0
     if request.vars.signin:
@@ -78,14 +78,30 @@ def validateSignUp(vars):
 
 def restart():
     return dict()
+  
+def isValidZipCode(zipCode):
+    if re.match('^\d{5}(-\d{4})?$', zipCode) == None:
+        return False
+    return True
+
+def isValidRadius(radius):
+    if radius >= 10 and radius <= 60:
+        return True
+    return False
 
 def preferences():
     if request.vars.price or request.vars.zipcode or request.vars.radius:
         if request.vars.price:
             if request.vars.zipcode:
                 if request.vars.radius:
+                    zipCode = request.vars.zipcode
+                    if not isValidZipCode(zipCode):
+                        return {'error_msg': 'Invalid zip code provided.'}
                     session.zipCode = request.vars.zipcode
-                    session.maxDistanceInMiles = float(request.vars.radius)
+                    maxDistanceInMiles = float(request.vars.radius)
+                    if not isValidRadius(maxDistanceInMiles):
+                        return {'error_msg': 'Invalid search radius. Please choose a value in the range [10 ... 60].'}
+                    session.maxDistanceInMiles = maxDistanceInMiles
                     priceString = ""
                     for tier in request.vars.price:
                         priceString = priceString + tier + ','
