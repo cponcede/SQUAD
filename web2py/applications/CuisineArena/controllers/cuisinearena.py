@@ -114,8 +114,8 @@ def cuisineServer():
 def updateElo(cuisine1,cuisine2, winner):
     K = 32
 
-    # p1_elo = session.cuisineRatings[cuisine1]
-    # p2_elo = session.cuisineRatings[cuisine2]
+    p1_elo = session.cuisineRatings[cuisine1]
+    p2_elo = session.cuisineRatings[cuisine2]
     t1 = math.pow(10,(float(p1_elo)/400))
     t2 = math.pow(10,(float(p2_elo)/400))
     exp1 = t1/(t1+t2)
