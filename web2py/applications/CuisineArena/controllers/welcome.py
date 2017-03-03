@@ -3,11 +3,43 @@
 def landingpage():
     session.numMatchups = 0
     if request.vars.signin:
-        redirect(URL('welcome', 'signin'))
-    elif request.vars.signup:
-        redirect(URL('welcome', 'signup'))
+        user = db.user(db.user.username == request.vars.signin)
+        if user:
+            if user.password == request.vars.signinpassword:
+                session.name = request.vars.signin
+                session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
+                base_ELO = 1500
+                session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
+                session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
+                session.previousCuisines = ["",""]
+                redirect(URL('welcome', 'preferences'))
+            else:
+                print 'wrong password'
+                return dict(error=True, message='Password is incorrect', rows=db().select(db.user.ALL), user=user, password=user.password) #right now just returns to signin page
+        else:
+            print 'no user'
+            return dict(error=True, message='No such user', rows=db().select(db.user.ALL)) #right now just returns to singin page
+    elif request.vars.username:
+        validated, message = validateSignUp(request.vars)
+        if not validated:
+            return dict(error=True, message=message)
+        try:
+            db.user.insert(username=request.vars.username, password=request.vars.password)
+        except Exception, e:
+            db.rollback()
+            return dict(error=True, message='Invalid SignUp DATABASE FAILED', exception = e, rows=db().select(db.user.ALL)) #right now this just returns to signup maybe should change
+        else:
+            db.commit()
+            session.name = request.vars.username
+            session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
+            base_ELO = 1500
+            session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
+            session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
+            session.previousCuisines = ["",""]
+            redirect(URL('welcome', 'preferences'))
     else:
-        return dict()
+        return dict(error=False)
+    
 
 def signin():
     if request.vars.submited:
