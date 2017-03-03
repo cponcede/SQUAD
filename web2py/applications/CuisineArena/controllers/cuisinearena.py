@@ -31,7 +31,10 @@ def arena():
             maxRating = session.cuisineRatings[max(session.cuisineRatings, key=session.cuisineRatings.get)]
             for key in session.cuisineRatings.keys():
                 row = db(db.image.title == key).select(db.image.foursquareId, db.image.title)
-                finalRatings[row[0]['foursquareId']] = (row[0]['title'], (1.0*session.cuisineRatings[key] - 1.0*minRating)/(1.0*maxRating - 1.0*minRating))
+                if maxRating == minRating:
+                    finalRatings[row[0]['foursquareId']] = (row[0]['title'], 1.0)
+                else:
+                    finalRatings[row[0]['foursquareId']] = (row[0]['title'], (1.0*session.cuisineRatings[key] - 1.0*minRating)/(1.0*maxRating - 1.0*minRating))
             # Only show results for cuisines in the top 25% of results. (We can change this number later based on results)
             session.finalRatings = dict((k, v) for k, v in finalRatings.items() if v[1] > 0.75)
             redirect(URL('results', 'list'))
@@ -131,6 +134,12 @@ def updateElo(cuisine1,cuisine2, winner):
     session.cuisineRatings[cuisine1] = p1_new
     session.cuisineRatings[cuisine2] = p2_new
 
+    #update the cuisine rankings in the model
+    cuisine_row_1 = db((db.cuisine.username == session.name) & (db.cuisine.cuisine == cuisine1)).select().first()
+    cuisine_row_1.update_record(rating = p1_new)
+
+    cuisine_row_2 = db((db.cuisine.username == session.name) & (db.cuisine.cuisine == cuisine2)).select().first()
+    cuisine_row_2.update_record(rating = p2_new)
 
 def download():
     return response.download(request, db)

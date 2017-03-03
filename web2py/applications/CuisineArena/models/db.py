@@ -120,10 +120,11 @@ auth.settings.reset_password_requires_verification = True
 # Consult manual for more options, validators, etc.
 
 db = DAL("sqlite://storage.sqlite")
-db.define_table('image', Field('title', unique=True), Field('file', 'upload'), Field('foursquareId'), format = '%(title)s %(foursquareId)')
+db.define_table('image', Field('title', unique=True), Field('file', 'upload'), Field('foursquareId'), format = '%(title)s %(foursquareId)', fake_migrate = True)
 db.image.title.requires = IS_NOT_IN_DB(db, db.image.title)
 
 db.define_table('user', Field('username', unique=True, notnull=True), Field('password', notnull=True), format = '%(user)s')
+db.define_table('cuisine', Field('username'), Field('cuisineId'), Field('cuisine'), Field('rating', default=1500))
 #db.person.drop()
 # More API examples for controllers:
 #
