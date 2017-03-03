@@ -134,6 +134,12 @@ def updateElo(cuisine1,cuisine2, winner):
     session.cuisineRatings[cuisine1] = p1_new
     session.cuisineRatings[cuisine2] = p2_new
 
+    #update the cuisine rankings in the model
+    cuisine_row_1 = db((db.cuisine.username == session.name) & (db.cuisine.cuisine == cuisine1)).select().first()
+    cuisine_row_1.update_record(rating = p1_new)
+
+    cuisine_row_2 = db((db.cuisine.username == session.name) & (db.cuisine.cuisine == cuisine2)).select().first()
+    cuisine_row_2.update_record(rating = p2_new)
 
 def download():
     return response.download(request, db)
