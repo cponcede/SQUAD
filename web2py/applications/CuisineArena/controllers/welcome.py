@@ -39,58 +39,6 @@ def landingpage():
             redirect(URL('welcome', 'preferences'))
     else:
         return dict(error=False)
-    
-
-def signin():
-    if request.vars.submited:
-        user = db.user(db.user.username == request.vars.username)
-        if user:
-            #redirect to restart() here
-            if user.password == request.vars.password:
-                session.name = request.vars.username
-                session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
-                base_ELO = 1500
-                session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
-                session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
-                session.previousCuisines = ["",""]
-                redirect(URL('welcome', 'preferences'))
-            else:
-                return dict(error=True, message='Password is incorrect', user=user, password=user.password) #right now just returns to signin page
-        else:
-            return dict(error=True, message='No such user') #right now just returns to singin page
-    else:
-        return dict(error=False)
-
-def signup():
-    if request.vars.submited:
-        validated, message = validateSignUp(request.vars)
-        if not validated:
-            return dict(error=True, message=message)
-        try:
-            db.user.insert(username=request.vars.username, password=request.vars.password)
-        except Exception, e:
-            db.rollback()
-            return dict(error=True, message='Invalid SignUp DATABASE FAILED') #right now this just returns to signup maybe should change
-        else:
-            db.commit()
-            session.name = request.vars.username
-            session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
-            base_ELO = 1500
-            for cuisine in session.cuisines:
-                cuisineId = db(db.image.title == cuisine).select().first().id
-                try:
-                    db.cuisine.insert(username=session.name, cuisineId=cuisineId, cuisine=cuisine, rating=1500)
-                except:
-                    db.rollback()
-                    return dict(error=True, message='Unable to insert row into cuisine table', exception = e, cuisine=cuisine)
-                else:
-                    db.commit()
-            session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
-            session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
-            session.previousCuisines = ["",""]
-            redirect(URL('welcome', 'preferences'))
-    else:
-        return dict(error=False)
 
 def validateSignUp(vars):
     if len(vars.username) == 0:
