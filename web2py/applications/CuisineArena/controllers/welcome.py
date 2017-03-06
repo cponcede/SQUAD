@@ -19,18 +19,18 @@ def landingpage():
         else:
             print 'no user'
             return dict(error=True, message='No such user', rows=db().select(db.user.ALL)) #right now just returns to singin page
-    elif request.vars.username:
+    elif request.vars.signup:
         validated, message = validateSignUp(request.vars)
         if not validated:
             return dict(error=True, message=message)
         try:
-            db.user.insert(username=request.vars.username, password=request.vars.password)
+            db.user.insert(username=request.vars.signup, password=request.vars.password)
         except Exception, e:
             db.rollback()
             return dict(error=True, message='Invalid SignUp DATABASE FAILED', exception = e, rows=db().select(db.user.ALL)) #right now this just returns to signup maybe should change
         else:
             db.commit()
-            session.name = request.vars.username
+            session.name = request.vars.signup
             session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
             base_ELO = 1500
             session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
@@ -41,7 +41,7 @@ def landingpage():
         return dict(error=False)
 
 def validateSignUp(vars):
-    if len(vars.username) == 0:
+    if len(vars.signup) == 0:
         return False, "Username can't be empty"
     elif len(vars.password) == 0:
         return False, "Password can't be empty"
@@ -51,7 +51,7 @@ def validateSignUp(vars):
         return False, "First Name can't be empty"
     elif len(vars.lastname) == 0:
         return False, "Last Name can't be empty"
-    elif db(db.user.username == vars.username).select().first() != None:
+    elif db(db.user.username == vars.signup).select().first() != None:
         return False, "Username already exists in the table"
     else:
         return True, ""
