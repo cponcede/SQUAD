@@ -5,16 +5,37 @@
     <title>Optimal Pizza</title>
 </head>
 <body>
-    <center>
-        <h1 class="title">Welcome to CuisineArena</h1>
-        <br>
-        <img src="../static/images/basic_logo.png" alt="some_text" style="width:250px; height:250px">
-        <br>
-        <br>
-        <form>
-            <input type="submit" name="signin" value="Sign In">
-            <br>or<br>
-            <input type="submit" name ="signup" value="Sign Up"><br>
-        </form>
-    </center>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col s4 offset-s2">
+            <center>
+                <br><br><br>
+                <h1 class="title">Welcome to Optimal Pizza</h1>
+                <br>
+                <img src="../static/images/basic_logo.png" alt="some_text" style="width:250px; height:250px">
+            </center>
+        </div>
+        <div class="col s4">
+            <h1>Sign Up</h1>
+            <h4>{{if error:}}{{=message}}{{pass}}</h4>
+            <div>
+                <form>
+                    <input type="text" name="signup" placeholder="Username"><br>
+                    <input type="password" name="password" placeholder="Password"><br>
+                    <input type="password" name="confirmation" placeholder="Confirm Password"><br>
+                    <input type="text" name="firstname" placeholder="First Name"><br>
+                    <input type="text" name="lastname" placeholder="Last Name"><br>
+                    <input type="text" name="email" placeholder="E-Mail"><br>
+                    <input type="hidden" name="submited" value="True">
+                    <input type="submit">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 grey lighten-1">
+            <br><br><br><br><br><br><br><br><br>
+        </div>
+    </div>
 </body>
