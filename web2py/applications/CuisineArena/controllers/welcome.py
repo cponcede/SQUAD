@@ -5,7 +5,7 @@ def landingpage():
     if request.vars.signin:
         user = db.user(db.user.username == request.vars.signin)
         if user:
-            if user.password == request.vars.password:
+            if user.password == request.vars.signinpassword:
                 session.name = request.vars.username
                 redirect(URL('welcome', 'preferences'))
             else:
