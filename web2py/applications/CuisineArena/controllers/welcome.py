@@ -31,6 +31,7 @@ def landingpage():
             session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
             session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
             session.previousCuisines = ["",""]
+            session.first = True
             redirect(URL('welcome', 'preferences'))
     else:
         return dict(error=False)
@@ -101,7 +102,10 @@ def preferences():
                         priceString = priceString + tier + ','
                     priceString = priceString[:-1]
                     session.pricePrefs = priceString
-                    redirect(URL('welcome','reset'))
+                    if session.first:
+                        redirect(URL('cuisinearena', 'arena'))
+                    else:
+                        redirect(URL('welcome','reset'))
                 else:
                     return {'error_msg': 'Error: No radius to search was provided.'}
             else:
