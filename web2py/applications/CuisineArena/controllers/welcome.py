@@ -3,51 +3,31 @@ import re
 def landingpage():
     session.numMatchups = 0
     if request.vars.signin:
-        redirect(URL('welcome', 'signin'))
-    elif request.vars.signup:
-        redirect(URL('welcome', 'signup'))
-    else:
-        return dict()
-
-def signin():
-    if request.vars.submited:
-        user = db.user(db.user.username == request.vars.username)
+        user = db.user(db.user.username == request.vars.signin)
         if user:
-            #redirect to restart() here
             if user.password == request.vars.password:
                 session.name = request.vars.username
                 redirect(URL('welcome', 'preferences'))
             else:
-                return dict(error=True, message='Password is incorrect', user=user, password=user.password) #right now just returns to signin page
+                print 'wrong password'
+                return dict(error=True, message='Password is incorrect', rows=db().select(db.user.ALL), user=user, password=user.password) #right now just returns to signin page
         else:
-            return dict(error=True, message='No such user') #right now just returns to singin page
-    else:
-        return dict(error=False)
-
-def signup():
-    if request.vars.submited:
+            print 'no user'
+            return dict(error=True, message='No such user', rows=db().select(db.user.ALL)) #right now just returns to singin page
+    elif request.vars.signup:
         validated, message = validateSignUp(request.vars)
         if not validated:
             return dict(error=True, message=message)
         try:
-            db.user.insert(username=request.vars.username, password=request.vars.password)
+            db.user.insert(username=request.vars.signup, password=request.vars.password)
         except Exception, e:
             db.rollback()
-            return dict(error=True, message='Invalid SignUp DATABASE FAILED') #right now this just returns to signup maybe should change
+            return dict(error=True, message='Invalid SignUp DATABASE FAILED', exception = e, rows=db().select(db.user.ALL)) #right now this just returns to signup maybe should change
         else:
             db.commit()
-            session.name = request.vars.username
+            session.name = request.vars.signup
             session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
             base_ELO = 1500
-            for cuisine in session.cuisines:
-                cuisineId = db(db.image.title == cuisine).select().first().id
-                try:
-                    db.cuisine.insert(username=session.name, cuisineId=cuisineId, cuisine=cuisine, rating=1500)
-                except:
-                    db.rollback()
-                    return dict(error=True, message='Unable to insert row into cuisine table', exception = e, cuisine=cuisine)
-                else:
-                    db.commit()
             session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
             session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
             session.previousCuisines = ["",""]
@@ -56,7 +36,7 @@ def signup():
         return dict(error=False)
 
 def validateSignUp(vars):
-    if len(vars.username) == 0:
+    if len(vars.signup) == 0:
         return False, "Username can't be empty"
     elif len(vars.password) == 0:
         return False, "Password can't be empty"
@@ -66,7 +46,7 @@ def validateSignUp(vars):
         return False, "First Name can't be empty"
     elif len(vars.lastname) == 0:
         return False, "Last Name can't be empty"
-    elif db(db.user.username == vars.username).select().first() != None:
+    elif db(db.user.username == vars.signup).select().first() != None:
         return False, "Username already exists in the table"
     else:
         return True, ""
