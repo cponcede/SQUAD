@@ -6,12 +6,7 @@ def landingpage():
         user = db.user(db.user.username == request.vars.signin)
         if user:
             if user.password == request.vars.signinpassword:
-                session.name = request.vars.signin
-                session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
-                base_ELO = 1500
-                session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
-                session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
-                session.previousCuisines = ["",""]
+                session.name = request.vars.username
                 redirect(URL('welcome', 'preferences'))
             else:
                 print 'wrong password'
@@ -56,8 +51,27 @@ def validateSignUp(vars):
     else:
         return True, ""
 
-def restart():
-    return dict()
+def reset():
+    if request.vars.reset or request.vars.no_reset:
+        session.cuisines = ["Indian","Italian","Mexican","Barbecue","Burgers","Chinese","Japanese","American_(New)","Pizza","Salad","Sandwiches","Seafood","Sushi","American_(Traditional)","Vietnamese"]
+
+        if request.vars.reset:
+            session.previousCuisines = ["",""]
+            session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines} 
+
+            #
+            base_ELO = 1500
+            session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
+        else: #request.vars.no_reset:
+            #these may be a bug talk to keyur about the possibility trying to include these from their prior session?
+            session.previousCuisines = ["",""] 
+            session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
+
+            rows = db(db.cuisine.username == session.name).select()
+            session.cuisineRatings = {row.cuisine:float(row.rating) for row in rows}
+        redirect(URL('cuisinearena', 'arena'))
+    else:
+        return dict(message="WELCOME TO COLLEGE")
   
 def isValidZipCode(zipCode):
     if re.match('^\d{5}(-\d{4})?$', zipCode) == None:
@@ -87,7 +101,7 @@ def preferences():
                         priceString = priceString + tier + ','
                     priceString = priceString[:-1]
                     session.pricePrefs = priceString
-                    redirect(URL('cuisinearena','arena'))
+                    redirect(URL('welcome','reset'))
                 else:
                     return {'error_msg': 'Error: No radius to search was provided.'}
             else:

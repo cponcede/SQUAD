@@ -1,0 +1,11 @@
+{{extend 'layout.html'}}
+<head>
+    <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
+</head>
+<h1>Would you like to reset your preferences?</h1>
+<h4>{{=message}}</h4>	
+<form>
+    <input type="submit" name="reset" value="RESET THAT SHIT">
+    <br>or<br>
+    <input type="submit" name ="no_reset" value="KEEP MY OLD PREFERENCES"><br>
+</form>
