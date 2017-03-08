@@ -106,7 +106,6 @@ def preferences():
                     priceString = priceString[:-1]
                     session.pricePrefs = priceString
                     if session.new_user:
-                        redirect(URL('welcome','landingpage'))
                         redirect(URL('cuisinearena', 'arena'))
                     else:
                         redirect(URL('welcome','reset'))
