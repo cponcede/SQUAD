@@ -6,7 +6,7 @@ def landingpage():
         user = db.user(db.user.username == request.vars.signin)
         if user:
             if user.password == request.vars.signinpassword:
-                session.name = request.vars.username
+                session.name = request.vars.signin
                 redirect(URL('welcome', 'preferences'))
             else:
                 print 'wrong password'
@@ -31,7 +31,7 @@ def landingpage():
             session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
             session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
             session.previousCuisines = ["",""]
-            session.first = True
+            session.new_user = True
             redirect(URL('welcome', 'preferences'))
     else:
         return dict(error=False)
@@ -102,7 +102,7 @@ def preferences():
                         priceString = priceString + tier + ','
                     priceString = priceString[:-1]
                     session.pricePrefs = priceString
-                    if session.first:
+                    if session.new_user:
                         redirect(URL('cuisinearena', 'arena'))
                     else:
                         redirect(URL('welcome','reset'))
