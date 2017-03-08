@@ -6,7 +6,7 @@ def landingpage():
         user = db.user(db.user.username == request.vars.signin)
         if user:
             if user.password == request.vars.signinpassword:
-                session.name = request.vars.username
+                session.name = db.user.username
                 redirect(URL('welcome', 'preferences'))
             else:
                 print 'wrong password'
@@ -32,6 +32,8 @@ def landingpage():
             session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
             session.previousCuisines = ["",""]
             session.first = True
+            for i,cuisine in enumerate(session.cuisineRatings): #THIS IS A CUISINE ID BUG BUT I GOTTA GO TO CLASS
+                db.cuisine.insert(username=session.name, cuisineId=i, cuisine=cuisine, rating=base_ELO)
             redirect(URL('welcome', 'preferences'))
     else:
         return dict(error=False)
