@@ -7,6 +7,7 @@ def landingpage():
         if user:
             if user.password == request.vars.signinpassword:
                 session.name = request.vars.signin
+                session.new_user = False
                 redirect(URL('welcome', 'preferences'))
             else:
                 print 'wrong password'
