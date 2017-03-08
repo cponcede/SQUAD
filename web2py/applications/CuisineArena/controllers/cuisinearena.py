@@ -39,7 +39,7 @@ def arena():
             session.finalRatings = dict((k, v) for k, v in finalRatings.items() if v[1] > 0.75)
             #update the cuisine rankings in the model
             for cuisine in session.cuisineRatings:
-                rating = session.cuisineRatings
+                rating = session.cuisineRatings[cuisine]
                 cuisine_row = db((db.cuisine.username == session.name) & (db.cuisine.cuisine == cuisine)).select().first()
                 cuisine_row.update_record(rating = rating)
 
