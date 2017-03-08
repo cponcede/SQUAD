@@ -31,7 +31,7 @@ def landingpage():
             session.cuisineRatings = {cuisine:base_ELO for cuisine in session.cuisines}
             session.cuisineCounts = {cuisine:0 for cuisine in session.cuisines}
             session.previousCuisines = ["",""]
-            session.first = True
+            session.new_user = True
             for i,cuisine in enumerate(session.cuisineRatings): #THIS IS A CUISINE ID BUG BUT I GOTTA GO TO CLASS
                 db.cuisine.insert(username=session.name, cuisineId=i, cuisine=cuisine, rating=base_ELO)
             redirect(URL('welcome', 'preferences'))
@@ -104,7 +104,7 @@ def preferences():
                         priceString = priceString + tier + ','
                     priceString = priceString[:-1]
                     session.pricePrefs = priceString
-                    if session.first:
+                    if session.new_user:
                         redirect(URL('cuisinearena', 'arena'))
                     else:
                         redirect(URL('welcome','reset'))
