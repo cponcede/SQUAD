@@ -7,6 +7,7 @@ def landingpage():
         if user:
             if user.password == request.vars.signinpassword:
                 session.name = request.vars.signin
+                session.new_user = False
                 redirect(URL('welcome', 'preferences'))
             else:
                 print 'wrong password'
@@ -105,6 +106,7 @@ def preferences():
                     priceString = priceString[:-1]
                     session.pricePrefs = priceString
                     if session.new_user:
+                        redirect(URL('welcome','landingpage'))
                         redirect(URL('cuisinearena', 'arena'))
                     else:
                         redirect(URL('welcome','reset'))
