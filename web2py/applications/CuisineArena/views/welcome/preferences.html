@@ -2,18 +2,50 @@
 <head>
     <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
 </head>
-<h1>Please enter your location and price preferences below before beginning.</h1>
-<h4>{{=error_msg}}</h4>
-<form>
-	Zip code:<br>
-    <input type="number" name="zipcode" maxlength="5" required ><br>
-    Radius to search (in miles):<br>
-    <input type="number" name="radius" required ><br>
-    Price tiers: <br>
-    <input type="checkbox" name="price" id="price1" value="1"><label for="price1">$</label>	&nbsp; &nbsp;
-    <input type="checkbox" name="price" id="price2" value="2"><label for="price2">$$</label> &nbsp; &nbsp;
-    <input type="checkbox" name="price" id="price3" value="3"><label for="price3">$$$</label> &nbsp; &nbsp;
-    <input type="checkbox" name="price" id="price4" value="4"><label for="price4">$$$$</label> &nbsp; &nbsp;
-    <br>
-	<input type="submit">
-</form>
+<body>
+    <div class="container">
+        <h1>Please enter your location and price preferences below before beginning.</h1>
+        <h4>{{=error_msg}}</h4>
+        <form>
+            <div style="height: 300px;">
+                Zip code:<br>
+                <input type="number" name="zipcode" maxlength="5" required ><br>
+                Radius to search (in miles):<br>
+                <input type="number" name="radius" required ><br>
+                Price tiers: <br>
+                <input type="checkbox" name="price" id="price1" value="1"><label for="price1">$</label>	&nbsp; &nbsp;
+                <input type="checkbox" name="price" id="price2" value="2"><label for="price2">$$</label> &nbsp; &nbsp;
+                <input type="checkbox" name="price" id="price3" value="3"><label for="price3">$$$</label> &nbsp; &nbsp;
+                <input type="checkbox" name="price" id="price4" value="4"><label for="price4">$$$$</label> &nbsp; &nbsp;
+                <br>
+                <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck" checked><label for="yesCheck">Alone</label>
+                <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck"><label for="noCheck">Group</label>
+                <br>
+                <div id="ifYes" style="visibility:hidden">
+                    <form>
+                        <div class="row">
+                            <div class="col s2">
+                                <input type="text" name="newid" placeholder="New Group ID" required>
+                            </div>
+                            <div class="col s2">
+                                <input type="text" name="groupid" placeholder="Existing Group ID" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <input type="submit">
+            </div>
+            <br>
+        </form>
+    </div>
+</body>
+
+<script>
+function yesnoCheck() {
+    if (document.getElementById('noCheck').checked) {
+        document.getElementById('ifYes').style.visibility = 'visible';
+    } else {
+        document.getElementById('ifYes').style.visibility = 'hidden';
+    }
+}
+</script>
