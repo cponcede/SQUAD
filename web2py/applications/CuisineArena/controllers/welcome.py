@@ -90,33 +90,32 @@ def isValidRadius(radius):
         return True
     return False
 
+def getZipCode():
+    response = requests.post('https://www.googleapis.com/geolocation/v1/geolocate?key=' + GOOGLE_MAPS_API_KEY)
+    loc = response.json()['location']
+    lat = loc['lat']
+    lng = loc['lng']
+    requestString = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + str(lat) + ',' + str(lng) + '&key=' + GOOGLE_MAPS_API_KEY
+    secondResponse = requests.post(requestString).json()['results'][0]
+    for component in secondResponse['address_components']:
+        if 'postal_code' in component['types']:
+            zipCode = component['long_name']
+            if not isValidZipCode(zipCode):
+                return {'error_msg': 'Invalid zip code provided.'}
+            session.zipCode = zipCode
+            print("GEOZIP = " + zipCode)
+            return zipCode
+
 def preferences():
     if request.vars.price or request.vars.zipcode or request.vars.radius:
         if request.vars.price:
-            if request.vars.zipcode or request.vars.useCurrentLocation:
+            if request.vars.zipcode:
                 if request.vars.radius:
                     # User current location
-                    if request.vars.useCurrentLocation:
-                        response = requests.post('https://www.googleapis.com/geolocation/v1/geolocate?key=' + GOOGLE_MAPS_API_KEY)
-                        loc = response.json()['location']
-                        lat = loc['lat']
-                        lng = loc['lng']
-                        requestString = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + str(lat) + ',' + str(lng) + '&key=' + GOOGLE_MAPS_API_KEY
-                        secondResponse = requests.post(requestString).json()['results'][0]
-                        for component in secondResponse['address_components']:
-                            if 'postal_code' in component['types']:
-                                zipCode = component['long_name']
-                                if not isValidZipCode(zipCode):
-                                    return {'error_msg': 'Invalid zip code provided.'}
-                                session.zipCode = zipCode
-                                print("GEOZIP = " + zipCode)
-                                break
-                    # Use provided zip code
-                    elif request.vars.zipCode:
-                        zipCode = request.vars.zipcode
-                        if not isValidZipCode(zipCode):
-                            return {'error_msg': 'Invalid zip code provided.'}
-                        session.zipCode = request.vars.zipcode
+                    zipCode = request.vars.zipcode
+                    if not isValidZipCode(zipCode):
+                        return {'error_msg': 'Invalid zip code provided.'}
+                    session.zipCode = request.vars.zipcode
                     maxDistanceInMiles = float(request.vars.radius)
                     if not isValidRadius(maxDistanceInMiles):
                         return {'error_msg': 'Invalid search radius. Please choose a value in the range [10 ... 60].'}
