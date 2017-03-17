@@ -125,6 +125,8 @@ db.image.title.requires = IS_NOT_IN_DB(db, db.image.title)
 
 db.define_table('user', Field('username', unique=True, notnull=True), Field('password', notnull=True), format = '%(user)s')
 db.define_table('cuisine', Field('username'), Field('cuisineId'), Field('cuisine'), Field('rating', default=1500))
+db.define_table('group1', Field('groupId'), Field('password')) #I guess group is a restricted keyword
+db.define_table('userGroup', Field('username'), Field('groupId'), Field('completed', default=False))
 #db.person.drop()
 # More API examples for controllers:
 #
