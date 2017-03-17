@@ -13,7 +13,7 @@
                 Radius to search (in miles):<br>
                 <input type="number" name="radius" required ><br>
                 Price tiers: <br>
-                <input type="checkbox" name="price" id="price1" value="1"><label for="price1">$</label>	&nbsp; &nbsp;
+                <input type="checkbox" name="price" id="price1" value="1"><label for="price1">$</label> &nbsp; &nbsp;
                 <input type="checkbox" name="price" id="price2" value="2"><label for="price2">$$</label> &nbsp; &nbsp;
                 <input type="checkbox" name="price" id="price3" value="3"><label for="price3">$$$</label> &nbsp; &nbsp;
                 <input type="checkbox" name="price" id="price4" value="4"><label for="price4">$$$$</label> &nbsp; &nbsp;
@@ -23,7 +23,7 @@
                 <input type="radio" onclick="javascript:yesnoCheck();" name="group" id="noCheck" value="group">
                 <label for="noCheck">I'm in a Group</label>
                 <br>
-                <div id="ifYes" style="visibility:hidden">
+                <div id="ifYes" style="display:none">
                     <div class="row">
                         <input type="radio" onclick="javascript:yesnoCheck();" name="create" id="yesCheck2" value="create" checked>
                         <label for="yesCheck2">Create a New Group</label>
@@ -77,19 +77,19 @@ setTimeout(function (){
 <script>
 function yesnoCheck() {
     if (document.getElementById('noCheck').checked) {
-        document.getElementById('ifYes').style.visibility = 'visible';
+        document.getElementById('ifYes').style.display = 'inherit';
         if(document.getElementById('yesCheck2').checked) {
-            document.getElementById('ifYes2').style.visibility = 'visible';
-            document.getElementById('ifNo2').style.visibility = 'hidden';
+            document.getElementById('ifYes2').style.display = 'inherit';
+            document.getElementById('ifNo2').style.display = 'none';
         }
         else {
-            document.getElementById('ifYes2').style.visibility = 'hidden';
-            document.getElementById('ifNo2').style.visibility = 'visible';            
+            document.getElementById('ifYes2').style.display = 'none';
+            document.getElementById('ifNo2').style.display = 'inherit';            
         }
     } else {
-        document.getElementById('ifYes').style.visibility = 'hidden';
-        document.getElementById('ifYes2').style.visibility = 'hidden';
-        document.getElementById('ifNo2').style.visibility = 'hidden';
+        document.getElementById('ifYes').style.display = 'none';
+        document.getElementById('ifYes2').style.display = 'none';
+        document.getElementById('ifNo2').style.display = 'none';
     }
 }
 </script>
