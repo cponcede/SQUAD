@@ -126,6 +126,29 @@ def preferences():
                         priceString = priceString + tier + ','
                     priceString = priceString[:-1]
                     session.pricePrefs = priceString
+                    if request.vars.group == 'group':
+                        session.group = True
+                        if request.vars.create == 'create':
+                            groupId = request.vars.createGroupId
+                            groupPass = request.vars.createPassword
+                            if len(groupId) == 0:
+                                return {'error_msg': 'Error: Group Id cannot be empty'}
+                            elif db(db.group1.groupId == groupId).select().first():
+                                return {'error_msg': 'Error: Group Id already exists'}
+                            emails = []
+                            for line in request.vars.emails: 
+                                emails.append(line)
+                            db.group1.insert(groupId = groupId, password = groupPass)
+                            #handle emails later
+                        else:
+                            groupId = request.vars.joinGroupId
+                            groupPass = request.vars.joinPassword
+                            row = db(db.group1.groupId == groupId).select().first()
+                            if row == None:
+                                return {'error_msg': 'Error: Group Id for joining a group does not exist.'}
+                            elif row.password != groupPass:
+                                return {'error_msg': 'Error: Incorrect Group Password, keyur.'}
+                        db.userGroup.insert(username = session.name, groupId = groupId, completed = False)
                     if session.new_user:
                         redirect(URL('cuisinearena', 'arena'))
                     else:
