@@ -8,8 +8,11 @@
         <h4>{{=error_msg}}</h4>
         <form>
             <div style="height: 300px;">
-                Zip code:<br>
-                <input type="number" name="zipcode" maxlength="5" required ><br>
+                <!--- TODO: Hide zip code when this is checked --->
+                <input type="checkbox" name="useCurrentLocation" id="locationCheckbox" value="true">
+                <label for="locationCheckbox">Use current location</label> <br>
+                Zip code: <br>
+                <input type="number" name="zipcode" maxlength="5" required><br>
                 Radius to search (in miles):<br>
                 <input type="number" name="radius" required ><br>
                 Price tiers: <br>
