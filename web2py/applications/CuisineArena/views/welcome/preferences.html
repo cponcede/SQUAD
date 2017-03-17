@@ -8,11 +8,8 @@
         <h4>{{=error_msg}}</h4>
         <form>
             <div style="height: 300px;">
-                <!--- TODO: Hide zip code when this is checked --->
-                <input type="checkbox" name="useCurrentLocation" id="locationCheckbox" value="true">
-                <label for="locationCheckbox">Use current location</label> <br>
                 Zip code: <br>
-                <input type="number" name="zipcode" maxlength="5" required><br>
+                <input type="number" name="zipcode" maxlength="5" id="zipcodeField" required><br>
                 Radius to search (in miles):<br>
                 <input type="number" name="radius" required ><br>
                 Price tiers: <br>
@@ -54,6 +51,28 @@
         </form>
     </div>
 </body>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+setTimeout(function (){
+    var useCurrentLocation = window.confirm("Would you like to use your current location?");
+    if (useCurrentLocation == true) {
+        $.ajax({
+            type: "POST",
+            url: "getZipCode",
+            data: { },
+            success: function(data){
+                console.log('test');
+                console.log(data);
+                $(zipcodeField).val(data);
+            }
+        });
+    }
+}, 1000);
+
+});
+</script>
 
 <script>
 function yesnoCheck() {
