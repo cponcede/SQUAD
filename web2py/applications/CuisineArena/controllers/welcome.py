@@ -4,6 +4,7 @@ import requests
 GOOGLE_MAPS_API_KEY = 'AIzaSyC5lZdS271NXjMuUooVStlcRGSj09FPpdU'
 
 def landingpage():
+    session.name = None
     session.numMatchups = 0
     if request.vars.signin:
         user = db.user(db.user.username == request.vars.signin)

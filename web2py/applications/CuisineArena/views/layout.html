@@ -75,11 +75,9 @@
                 <div class="col s1" align="right">
                     Hi {{=session.name}}
                 </div>
-                <form>
-                    <div class="col s1">
-                        <button type="submit" value="logout">Logout</button>
-                    </div>
-                </form>
+                <div class="col s1">
+                    {{=A('Logout', _href=URL('welcome', 'landingpage.html'), _class='waves-effect waves-light btn')}}
+                </div>
                 {{pass}}
               </div>
         </div>
