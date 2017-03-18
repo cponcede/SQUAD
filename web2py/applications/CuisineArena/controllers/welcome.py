@@ -126,6 +126,7 @@ def preferences():
                         priceString = priceString + tier + ','
                     priceString = priceString[:-1]
                     session.pricePrefs = priceString
+                    session.group = False
                     if request.vars.group == 'group':
                         session.group = True
                         if request.vars.create == 'create':
