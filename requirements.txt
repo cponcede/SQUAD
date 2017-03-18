@@ -3,7 +3,6 @@ bdist-mpkg==0.5.0
 foursquare==1!2016.9.12
 macholib==1.5.1
 modulegraph==0.10.4
-numpy==1.8.0rc1
 py2app==0.7.3
 pyobjc-core==2.5.1
 pyobjc-framework-Accounts==2.5.1
