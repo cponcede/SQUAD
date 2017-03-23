@@ -31,10 +31,12 @@
               	{{else:}}Closed Now
               	{{pass}}
               </li>
-              <li>Categories: 
+              <li>Categories:
+                <ul>
                 {{for cat in response._vars['restaurantDetails']['categories']:}}
-                {{=cat}}
+                <li>&emsp;{{=cat}}</li>
                 {{pass}}
+                </ul>
               </li>
               </ul>
             </div>
