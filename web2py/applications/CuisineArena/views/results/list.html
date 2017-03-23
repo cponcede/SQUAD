@@ -3,6 +3,24 @@
     <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
 </head>
 <body>
+    <div>
+        {{if group:}}
+            <h1>Group Check In</h1>
+            <h5>Rankings Include:</h5>
+            <ul>
+            {{for name in completed:}}
+                <li>{{=name}}</li>            
+            {{pass}}
+            </ul>
+            <h5>Still Waiting For:</h5>
+            {{if len(inProgress) == 0:}}
+                No one! Everyone's finished!
+            {{pass}}
+            {{for name in inProgress:}}
+                <li>{{=name}}</li>            
+            {{pass}}
+        {{pass}}
+    </div>
     <div style="width:100%">
         <form>
             <div>
