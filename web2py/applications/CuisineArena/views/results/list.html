@@ -22,6 +22,21 @@
         {{pass}}
     </div>
     <div style="width:100%">
+        <form>
+            <div>
+                Radius to search (in miles):<br>
+                <input type="number" name="radius" value={{=session.maxDistanceInMiles}} required ><br>
+                Price tiers: <br>
+                <input type="checkbox" name="price" id="price1" value="1" {{if '1' in priceTiers:}}checked{{pass}}><label for="price1">$</label> &nbsp; &nbsp;
+                <input type="checkbox" name="price" id="price2" value="2" {{if '2' in priceTiers:}}checked{{pass}}><label for="price2">$$</label> &nbsp; &nbsp;
+                <input type="checkbox" name="price" id="price3" value="3" {{if '3' in priceTiers:}}checked{{pass}}><label for="price3">$$$</label> &nbsp; &nbsp;
+                <input type="checkbox" name="price" id="price4" value="4" {{if '4' in priceTiers:}}checked{{pass}}><label for="price4">$$$$</label> &nbsp; &nbsp;
+                <br>
+                <input type="submit" value="Update filters">
+            </div>
+            <br>
+        </form>
+        <hr>
         <div style="width: 450px; float: left;">
             <h2>Your Top Cuisines:</h2><br>
                 {{for key in session.finalRatings.keys():}}<h3>{{=session.finalRatings[key][0]}}</h3><br>{{pass}}
