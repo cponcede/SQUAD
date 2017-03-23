@@ -1,3 +1,1 @@
-web:python manage.py runserver
-web: gunicorn CuisineArena.wsgi --log-file -
-heroku ps:scale web=1
+"web: python web2py.py -a 'uranium' -i 0.0.0.0 -p \$PORT"
