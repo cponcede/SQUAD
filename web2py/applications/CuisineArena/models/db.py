@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from gluon.contrib.heroku import get_db
 
 # -------------------------------------------------------------------------
 # This scaffolding model makes your app work on Google App Engine too
@@ -28,10 +29,12 @@ if not request.env.web2py_runtime_gae:
     # ---------------------------------------------------------------------
     # if NOT running on Google App Engine use SQLite or other DB
     # ---------------------------------------------------------------------
-    db = DAL(myconf.get('db.uri'),
-             pool_size=myconf.get('db.pool_size'),
-             migrate_enabled=myconf.get('db.migrate'),
-             check_reserved=['all'])
+    # db = DAL(myconf.get('db.uri'),
+    #          pool_size=myconf.get('db.pool_size'),
+    #          migrate_enabled=myconf.get('db.migrate'),
+    #          check_reserved=['all'])
+    db = get_db(name=None, pool_size=10)
+
 else:
     # ---------------------------------------------------------------------
     # connect to Google BigTable (optional 'google:datastore://namespace')
