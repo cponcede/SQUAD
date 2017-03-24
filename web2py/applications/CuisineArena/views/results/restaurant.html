@@ -3,44 +3,43 @@
     <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
 </head>
 <!-- {{=BEAUTIFY(response._vars['restaurantDetails'])}}
- -->
-
+-->
 <div class="row">
     <div class="col s12"> <!--only works on laptop now-->
-	    <div class="card">
-<!--             <div class="card-image">
-              <img src="images/sample-1.jpg">
-              <span class="card-title">RESTAURANT IMAGE GOES HERE</span>
-            </div> -->
-            {{=response._vars['restaurantDetails']}}
+        <div class="card" style="width:80vh;">
+            <div class="card-image">
+                <img src="{{=response._vars['restaurantDetails']['imageURL']}}" width="42">
+                <span class="card-title">{{=response._vars['restaurantDetails']['name']}}</span>
+            </div>
+            <!-- {{=response._vars['restaurantDetails']}} -->
             <div class="card-content">
-              <h4>{{=response._vars['restaurantDetails']['name']}}</h4>
-              <ul>
-              <li><a href="{{=response._vars['restaurantDetails']['menuURL']}}">Menu</a></li>
-              <li>Price: 
-              	{{if response._vars['restaurantDetails']['price'] == 1:}}$
-              	{{elif response._vars['restaurantDetails']['price'] == 2:}}$$
-              	{{elif response._vars['restaurantDetails']['price'] == 3:}}$$$
-              	{{elif response._vars['restaurantDetails']['price'] == 4:}}$$$$
-              	{{else:}}
-              	{{pass}}
-              </li>
-              <li>Rating: {{=response._vars['restaurantDetails']['rating']}}</li>
-              <li>Days Open: {{=response._vars['restaurantDetails']['hours']['timeframes'][0]['days']}}</li>
-              <li>
-              	Status: {{=response._vars['restaurantDetails']['hours']['status']}}
-              </li>
-              <li>Categories:
+                <!-- <h4>{{=response._vars['restaurantDetails']['name']}}</h4> -->
                 <ul>
-                {{for cat in response._vars['restaurantDetails']['categories']:}}
-                <li>&emsp;{{=cat}}</li>
-                {{pass}}
+                    <li><a href="{{=response._vars['restaurantDetails']['menuURL']}}">Menu</a></li>
+                    <li>Price: 
+                        {{if response._vars['restaurantDetails']['price'] == 1:}}$
+                        {{elif response._vars['restaurantDetails']['price'] == 2:}}$$
+                        {{elif response._vars['restaurantDetails']['price'] == 3:}}$$$
+                        {{elif response._vars['restaurantDetails']['price'] == 4:}}$$$$
+                        {{else:}}
+                        {{pass}}
+                    </li>
+                    <li>Rating: {{=response._vars['restaurantDetails']['rating']}}</li>
+                    <li>Days Open: {{=response._vars['restaurantDetails']['hours']['timeframes'][0]['days']}}</li>
+                    <li>
+                        Status: {{=response._vars['restaurantDetails']['hours']['status']}}
+                    </li>
+                    <li>Categories:
+                        <ul>
+                            {{for cat in response._vars['restaurantDetails']['categories']:}}
+                            <li>&emsp;{{=cat}}</li>
+                            {{pass}}
+                        </ul>
+                    </li>
                 </ul>
-              </li>
-              </ul>
             </div>
             <div class="card-action">
-              <a href="{{=URL('list')}}">Back to results</a>
+                <a href="{{=URL('list')}}">Back to results</a>
             </div>
         </div>
     </div>
