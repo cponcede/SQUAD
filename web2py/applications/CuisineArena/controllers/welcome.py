@@ -3,6 +3,9 @@ import requests
 
 GOOGLE_MAPS_API_KEY = 'AIzaSyC5lZdS271NXjMuUooVStlcRGSj09FPpdU'
 
+def isValidEmail(email):
+    return re.match("[^@]+@[^@]+\.[^@]+", email) != None
+
 def landingpage():
     session.name = None
     session.numMatchups = 0
@@ -56,6 +59,8 @@ def validateSignUp(vars):
         return False, "Last Name can't be empty"
     elif db(db.user.username == vars.signup).select().first() != None:
         return False, "Username already exists in the table"
+    elif isValidEmail(vars.email) == False:
+        return False, "Email not valid"
     else:
         return True, ""
 
