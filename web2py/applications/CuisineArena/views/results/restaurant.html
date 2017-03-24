@@ -13,30 +13,41 @@
             </div>
             <!-- {{=response._vars['restaurantDetails']}} -->
             <div class="card-content">
-                <!-- <h4>{{=response._vars['restaurantDetails']['name']}}</h4> -->
-                <ul>
-                    <li><a href="{{=response._vars['restaurantDetails']['menuURL']}}">Menu</a></li>
-                    <li>Price: 
-                        {{if response._vars['restaurantDetails']['price'] == 1:}}$
-                        {{elif response._vars['restaurantDetails']['price'] == 2:}}$$
-                        {{elif response._vars['restaurantDetails']['price'] == 3:}}$$$
-                        {{elif response._vars['restaurantDetails']['price'] == 4:}}$$$$
-                        {{else:}}
-                        {{pass}}
-                    </li>
-                    <li>Rating: {{=response._vars['restaurantDetails']['rating']}}</li>
-                    <li>Days Open: {{=response._vars['restaurantDetails']['hours']['timeframes'][0]['days']}}</li>
-                    <li>
-                        Status: {{=response._vars['restaurantDetails']['hours']['status']}}
-                    </li>
-                    <li>Categories:
-                        <ul>
-                            {{for cat in response._vars['restaurantDetails']['categories']:}}
-                            <li>&emsp;{{=cat}}</li>
-                            {{pass}}
-                        </ul>
-                    </li>
-                </ul>
+              <ul>
+                <li>{{if response._vars['restaurantDetails']['menuURL'] != 'No menu available':}}
+                    <a href="{{=response._vars['restaurantDetails']['menuURL']}}">Menu</a>
+                    {{else:}}
+                    No menu available
+                    {{pass}}
+                </li>
+                <li>Price: 
+                  {{if response._vars['restaurantDetails']['price'] == 1:}}$
+                  {{elif response._vars['restaurantDetails']['price'] == 2:}}$$
+                  {{elif response._vars['restaurantDetails']['price'] == 3:}}$$$
+                  {{elif response._vars['restaurantDetails']['price'] == 4:}}$$$$
+                  {{else:}}
+                  {{pass}}
+                </li>
+                <li>Rating: {{=response._vars['restaurantDetails']['rating']}}</li>
+                <li> {{if response._vars['restaurantDetails']['hours'] != 'No hours available':}}
+                      Days Open: {{=response._vars['restaurantDetails']['hours']['timeframes'][0]['days']}}
+                      {{else:}}
+                      No hours available
+                      {{pass}}
+                </li>
+                {{if response._vars['restaurantDetails']['hours'] != 'No hours available':}}
+                <li>
+                  {{if response._vars['restaurantDetails']['hours']['isOpen']:}} Open Now
+                  {{else:}}Closed Now
+                  {{pass}}
+                </li>
+                {{pass}}
+                <li>Categories: 
+                  {{for cat in response._vars['restaurantDetails']['categories']:}}
+                  {{=cat}}
+                  {{pass}}
+                </li>
+              </ul>
             </div>
             <div class="card-action">
                 <a href="{{=URL('list')}}">Back to results</a>
