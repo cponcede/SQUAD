@@ -125,25 +125,9 @@ def joinGroup():
             password = request.vars.password
             groupRow = db((db.userGroup.username == session.name)).select()
             if len(groupRow) == 0:
-                db.userGroup.insert(username = session.name, groupId = groupId, completed = False)
+                db.userGroup.insert(username = session.name, groupId = session.groupId, completed = False)
             redirect(URL('cuisinearena', 'arena'))
         else:
-            user = db.user(db.user.username == request.vars.signin)
-            if user:
-                if user.password == request.vars.signinpassword:
-                    groupRow = db.group1(db.group1.groupId == session.groupId).select.first()
-                    session.name = request.vars.signin
-                    session.new_user = False
-                    session.zipCode = groupRow.zipcode
-                    session.maxDistanceInMiles = groupRow.distance
-                    session.group = True
-                    session.pricePrefs = groupRow.price
-                    redirect(URL('welcome', 'reset'))
-                else:
-                    return dict(group=session.groupId, message='No such password')
-            else:
-                return dict(group=session.groupId,message='No such user') #right now just returns to singin page
-
             return dict() #handlelogin
     elif request.vars.groupId:
         return dict(group=session.groupId, message="")
@@ -151,7 +135,8 @@ def joinGroup():
         user = db.user(db.user.username == request.vars.signin)
         if user:
             if user.password == request.vars.signinpassword:
-                groupRow = db.group1(db.group1.groupId == session.groupId).select.first()
+                groupRow = db((db.group1.groupId == session.groupId)).select().first()
+                db.userGroup.insert(username = session.name, groupId = session.groupId, completed = False)
                 session.name = request.vars.signin
                 session.new_user = False
                 session.zipCode = groupRow.zipcode
@@ -221,7 +206,6 @@ def preferences():
                             if len(emails) > 0:
                                 handleEmails(emails, groupId, groupPass)
                             #handle emails later
-                            return {'error_msg': request.vars.emails}
                         else:
                             groupId = request.vars.joinGroupId
                             groupPass = request.vars.joinPassword
