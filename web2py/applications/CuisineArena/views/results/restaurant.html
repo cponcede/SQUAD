@@ -12,6 +12,7 @@
               <img src="images/sample-1.jpg">
               <span class="card-title">RESTAURANT IMAGE GOES HERE</span>
             </div> -->
+            {{=response._vars['restaurantDetails']}}
             <div class="card-content">
               <h4>{{=response._vars['restaurantDetails']['name']}}</h4>
               <ul>
@@ -27,9 +28,7 @@
               <li>Rating: {{=response._vars['restaurantDetails']['rating']}}</li>
               <li>Days Open: {{=response._vars['restaurantDetails']['hours']['timeframes'][0]['days']}}</li>
               <li>
-              	{{if response._vars['restaurantDetails']['hours']['isOpen']:}} Open Now
-              	{{else:}}Closed Now
-              	{{pass}}
+              	Status: {{=response._vars['restaurantDetails']['hours']['status']}}
               </li>
               <li>Categories:
                 <ul>

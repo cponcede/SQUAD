@@ -3,6 +3,7 @@
 from gluon import *
 import operator
 import foursquare
+import requests
 
 class FoursquareAPI():
 
@@ -59,4 +60,10 @@ class FoursquareAPI():
             result['menuURL'] = 'No menu available'
         else:
             result['menuURL'] = restaurantDetails['menu']['url']
+        urlToDisplay = ""
+        if 'bestPhoto' in restaurantDetails and restaurantDetails['photos']['count'] > 0:
+            sizeString = str(restaurantDetails['bestPhoto']['width']) + 'x' + str(restaurantDetails['bestPhoto']['height'])
+            result['imageURL'] = restaurantDetails['bestPhoto']['prefix'] + sizeString + restaurantDetails['bestPhoto']['suffix']
+        else:
+            result['imageURL'] = 'No image present'
         return result
