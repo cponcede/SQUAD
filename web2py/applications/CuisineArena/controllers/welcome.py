@@ -22,7 +22,7 @@ def landingpage():
         else:
             print 'no user'
             return dict(error=True, message='No such user', rows=db().select(db.user.ALL)) #right now just returns to singin page
-    elif request.vars.signup:
+    elif request.vars.submited:
         validated, message = validateSignUp(request.vars)
         if not validated:
             return dict(error=True, message=message)
