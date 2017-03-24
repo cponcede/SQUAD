@@ -1,5 +1,9 @@
 import re
 import requests
+import smtplib
+import time
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
 
 GOOGLE_MAPS_API_KEY = 'AIzaSyC5lZdS271NXjMuUooVStlcRGSj09FPpdU'
 
@@ -120,6 +124,59 @@ def getZipCode():
             print("GEOZIP = " + zipCode)
             return zipCode
 
+def joinGroup():
+    if request.vars.groupId:
+        session.groupId = request.vars.groupId
+    if session.name:
+        if request.vars.groupId:
+            groupId = session.groupId
+            password = request.vars.password
+            groupRow = db((db.userGroup.username == session.name)).select()
+            if len(groupRow) == 0:
+                db.userGroup.insert(username = session.name, groupId = session.groupId, completed = False)
+            redirect(URL('cuisinearena', 'arena'))
+        else:
+            return dict() #handlelogin
+    elif request.vars.groupId:
+        return dict(group=session.groupId, message="")
+    else:
+        user = db.user(db.user.username == request.vars.signin)
+        if user:
+            if user.password == request.vars.signinpassword:
+                groupRow = db((db.group1.groupId == session.groupId)).select().first()
+                db.userGroup.insert(username = session.name, groupId = session.groupId, completed = False)
+                session.name = request.vars.signin
+                session.new_user = False
+                session.zipCode = groupRow.zipcode
+                session.maxDistanceInMiles = groupRow.distance
+                session.group = True
+                session.pricePrefs = groupRow.price
+                redirect(URL('welcome', 'reset'))
+            else:
+                return dict(group=session.groupId, message='No such password')
+        else:
+            return dict(group=session.groupId, message='No such user') #right now just returns to singin page
+
+def handleEmails(emails, groupId, password):
+    fromaddr = "cuisinearena@gmail.com"
+
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login("cuisinearena@gmail.com", "chrisponce")
+    i = 1
+    for email in emails:
+        msg = MIMEMultipart()
+        msg['From'] = fromaddr
+        msg['To'] = email  
+        msg['Subject'] = "Join Our CuisineArena Group"
+        body = "http://127.0.0.1:8000/CuisineArena/welcome/joinGroup?groupId=%s" % (groupId)
+        msg.attach(MIMEText(body, 'plain')) 
+        text = msg.as_string()
+        server.sendmail(fromaddr, email, text)
+
+    server.quit()
+
 def preferences():
     if request.vars.price or request.vars.zipcode or request.vars.radius:
         if request.vars.price:
@@ -149,10 +206,13 @@ def preferences():
                                 return {'error_msg': 'Error: Group Id cannot be empty'}
                             elif db(db.group1.groupId == groupId).select().first():
                                 return {'error_msg': 'Error: Group Id already exists'}
-                            emails = []
-                            for line in request.vars.emails: 
-                                emails.append(line)
-                            db.group1.insert(groupId = groupId, password = groupPass)
+                            emails = request.vars.emails.split()
+                            for email in emails:
+                                if not isValidEmail(email):
+                                    return {'error_msg': 'Error: Email: \'%s\' is invalid.' % email} 
+                            db.group1.insert(groupId = groupId, password = groupPass, zipcode=zipCode, distance=maxDistanceInMiles, price=priceString)
+                            if len(emails) > 0:
+                                handleEmails(emails, groupId, groupPass)
                             #handle emails later
                         else:
                             groupId = request.vars.joinGroupId
