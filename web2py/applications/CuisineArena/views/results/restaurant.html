@@ -15,7 +15,12 @@
             <div class="card-content">
               <h4>{{=response._vars['restaurantDetails']['name']}}</h4>
               <ul>
-              <li><a href="{{=response._vars['restaurantDetails']['menuURL']}}">Menu</a></li>
+              <li>{{if response._vars['restaurantDetails']['menuURL'] != 'No menu available':}}
+                  <a href="{{=response._vars['restaurantDetails']['menuURL']}}">Menu</a>
+                  {{else:}}
+                  No menu available
+                  {{pass}}
+              </li>
               <li>Price: 
               	{{if response._vars['restaurantDetails']['price'] == 1:}}$
               	{{elif response._vars['restaurantDetails']['price'] == 2:}}$$
@@ -25,12 +30,19 @@
               	{{pass}}
               </li>
               <li>Rating: {{=response._vars['restaurantDetails']['rating']}}</li>
-              <li>Days Open: {{=response._vars['restaurantDetails']['hours']['timeframes'][0]['days']}}</li>
+              <li> {{if response._vars['restaurantDetails']['hours'] != 'No hours available':}}
+                    Days Open: {{=response._vars['restaurantDetails']['hours']['timeframes'][0]['days']}}
+                    {{else:}}
+                    No hours available
+                    {{pass}}
+              </li>
+              {{if response._vars['restaurantDetails']['hours'] != 'No hours available':}}
               <li>
               	{{if response._vars['restaurantDetails']['hours']['isOpen']:}} Open Now
               	{{else:}}Closed Now
               	{{pass}}
               </li>
+              {{pass}}
               <li>Categories: 
                 {{for cat in response._vars['restaurantDetails']['categories']:}}
                 {{=cat}}
