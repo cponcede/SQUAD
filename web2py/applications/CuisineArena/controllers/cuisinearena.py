@@ -26,15 +26,43 @@ def arena():
         return dict(images = photos, ratings = [], matchupProgress = (matchupPercent, session.numMatchups), test = "first")
     else:
         if request.vars.done:
+            localRatings = deepcopy(session.cuisineRatings)
+            if session.group:
+                groupId = db((db.userGroup.username == session.name)).select().first().groupId
+                groupRows = db((db.userGroup.groupId == groupId)).select()
+
+                cuisine_allRatings = {cuisine:[] for cuisine in session.cuisineRatings.keys()}
+                for row in groupRows:
+                    #print row.username
+                    rows = db(db.cuisine.username == row.username).select()
+                    temp_ratings = {row.cuisine:float(row.rating) for row in rows}
+                    #print temp_ratings
+                    for cuisine,rating in temp_ratings.items():
+                        cuisine_allRatings[cuisine].append(rating)
+
+                groupRatings = {cuisine:sum(rating_list)/float(len(rating_list)) for cuisine,rating_list in cuisine_allRatings.items()}
+                localRatings = groupRatings
+
             finalRatings = {}
-            minRating = session.cuisineRatings[min(session.cuisineRatings, key=session.cuisineRatings.get)]
-            maxRating = session.cuisineRatings[max(session.cuisineRatings, key=session.cuisineRatings.get)]
-            for key in session.cuisineRatings.keys():
+
+            minRating = localRatings[min(localRatings, key=localRatings.get)]
+            maxRating = localRatings[max(localRatings, key=localRatings.get)]
+            for key in localRatings.keys():
                 row = db(db.image.title == key).select(db.image.foursquareId, db.image.title)
                 if maxRating == minRating:
                     finalRatings[row[0]['foursquareId']] = (row[0]['title'], 1.0)
                 else:
-                    finalRatings[row[0]['foursquareId']] = (row[0]['title'], (1.0*session.cuisineRatings[key] - 1.0*minRating)/(1.0*maxRating - 1.0*minRating))
+                    finalRatings[row[0]['foursquareId']] = (row[0]['title'], (1.0*localRatings[key] - 1.0*minRating)/(1.0*maxRating - 1.0*minRating))
+
+            #minRating = session.cuisineRatings[min(session.cuisineRatings, key=session.cuisineRatings.get)]
+            #maxRating = session.cuisineRatings[max(session.cuisineRatings, key=session.cuisineRatings.get)]
+            #for key in session.cuisineRatings.keys():
+                #row = db(db.image.title == key).select(db.image.foursquareId, db.image.title)
+                #if maxRating == minRating:
+                    #finalRatings[row[0]['foursquareId']] = (row[0]['title'], 1.0)
+                #else:
+                    #finalRatings[row[0]['foursquareId']] = (row[0]['title'], (1.0*session.cuisineRatings[key] - 1.0*minRating)/(1.0*maxRating - 1.0*minRating))
+
             # Only show results for cuisines in the top 25% of results. (We can change this number later based on results)
             session.finalRatings = dict((k, v) for k, v in finalRatings.items() if v[1] > 0.75)
             #update the cuisine rankings in the model
@@ -116,8 +144,6 @@ def cuisineServer():
                 if randCuisineFloat2 <= elo:
                     cuisine2 = cuisine
                     break
-
-        #print(randCuisineFloat, cuisine1, randCuisineFloat2, cuisine2)
 
     return (cuisine1, cuisine2)
 
