@@ -4,7 +4,7 @@ import requests
 GOOGLE_MAPS_API_KEY = 'AIzaSyC5lZdS271NXjMuUooVStlcRGSj09FPpdU'
 
 def isValidEmail(email):
-    return re.match("[^@]+@[^@]+\.[^@]+", email)
+    return re.match("[^@]+@[^@]+\.[^@]+", email) != None
 
 def landingpage():
     session.name = None
@@ -47,6 +47,7 @@ def landingpage():
         return dict(error=False)
 
 def validateSignUp(vars):
+    print vars
     if len(vars.signup) == 0:
         return False, "Username can't be empty"
     elif len(vars.password) == 0:
