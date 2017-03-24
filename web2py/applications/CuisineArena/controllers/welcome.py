@@ -47,7 +47,6 @@ def landingpage():
         return dict(error=False)
 
 def validateSignUp(vars):
-    print vars
     if len(vars.signup) == 0:
         return False, "Username can't be empty"
     elif len(vars.password) == 0:
