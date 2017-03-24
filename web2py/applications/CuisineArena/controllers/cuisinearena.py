@@ -70,9 +70,7 @@ def arena():
                 return dict(images = photos, ratings = [], matchupProgress = (matchupPercent, session.numMatchups), test = "First")
 
 def cuisineServer():
-    #print(session.cuisineCounts)
     zeroCuisines = [cuisine for cuisine,count in session.cuisineCounts.items() if count == 0]
-    #print(zeroCuisines)
     cuisine1 = ""
     cuisine2 = ""
     if len(zeroCuisines) == 1:
