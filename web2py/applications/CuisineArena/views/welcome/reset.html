@@ -2,44 +2,48 @@
 <head>
     <link href="{{=URL('static', 'css/materialize.css')}}" rel="stylesheet" type="text/css" />
 </head>
-<div class="container">
-    <center>
-        <h1>Would you like to reset your preferences?</h1>
-        <br><br>
-        <h4>{{=message}}</h4>
-    </center>
-    <br><br>
-    <div class="row">
-        <form class="col s12">
-            <div class="row">
-                <div class="col s5">
-                    <center>
-                    <button class="clickable card small" type="submit" name="reset" value="reset">
-                        <div class="card-content">
-                            <span class="card-title"><h5>Find New Preferences</h5></span>
-                            <br><br>
-                            This will reset your profile's preferences and start anew.
-                        </div>
-                    </button>
-                    </center>
-                </div>
-                <div class="col s2">
-                    <center>
-                    OR
-                    </center>
-                </div>
-                <div class="col s5">
-                    <center>
-                    <button class="clickable card small" type="submit" name="no_reset" value="no_reset">
-                        <div class="card-content">
-                            <span class="card-title"><h5>Keep My Preferences</h5></span>
-                            <br><br>
-                            This uses your profile's preferences and skips Cuisne Arena.
-                        </div>
-                    </button>
-                    </center>
+
+<div class="row">
+    <div class="col s12">
+        <center>
+            <span class="flow-text">
+                <h1>Would you like to reset your preferences?</h1>
+            </span>
+        </center>
+    </div>
+</div>
+
+<div class="row">
+    <form class="col s12">
+        <div class="row">
+            <div class="col s5">
+                <center>
+                <button class="clickable card small" type="submit" name="reset" value="reset">
+                    <div class="card-content">
+                        <span class="card-title"><h5>Find New Preferences</h5></span>
+                        <br><br>
+                        <h9>This will reset your profile's restaurant preferences and start anew.</h9>
+                    </div>
+                </button>
+                </center>
+            </div>
+            <div class="col s2">
+                <div style = "margin-top: 120px; margin-left: 95px;">
+                    <h1>or</h1>
                 </div>
             </div>
-        </form>
-    </div>
+            <div class="col s5">
+                <center>
+                <button class="clickable card small" type="submit" name="no_reset" value="no_reset">
+                    <div class="card-content">
+                        <span class="card-title"><h5>Keep My Preferences</h5></span>
+                        <br><br>
+                        This uses your existing profile's preferences in the Cuisine Arena.
+                    </div>
+                </button>
+                </center>
+            </div>
+        </div>
+    </form>
+</div>
 </div>
