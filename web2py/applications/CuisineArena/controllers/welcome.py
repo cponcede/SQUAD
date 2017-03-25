@@ -21,10 +21,8 @@ def landingpage():
                 session.new_user = False
                 redirect(URL('welcome', 'preferences'))
             else:
-                print 'wrong password'
                 return dict(error=True, message='Password is incorrect', rows=db().select(db.user.ALL), user=user, password=user.password) #right now just returns to signin page
         else:
-            print 'no user'
             return dict(error=True, message='No such user', rows=db().select(db.user.ALL)) #right now just returns to singin page
     elif request.vars.submited:
         validated, message = validateSignUp(request.vars)
@@ -121,10 +119,10 @@ def getZipCode():
             if not isValidZipCode(zipCode):
                 return {'error_msg': 'Invalid zip code provided.'}
             session.zipCode = zipCode
-            print("GEOZIP = " + zipCode)
             return zipCode
 
 def joinGroup():
+    session.numMatchups = 0
     if request.vars.groupId:
         session.groupId = request.vars.groupId
     if session.name:
@@ -148,7 +146,8 @@ def joinGroup():
                 db.userGroup.insert(username = session.name, groupId = session.groupId, completed = False)
                 session.new_user = False
                 session.zipCode = groupRow.zipcode
-                session.maxDistanceInMiles = groupRow.distance
+                session.maxDistanceInMiles = float(groupRow.distance)
+                #print groupRow.distance, type(groupRow.distance)
                 session.group = True
                 session.pricePrefs = groupRow.price
                 redirect(URL('welcome', 'reset'))
