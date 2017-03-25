@@ -170,7 +170,7 @@ def handleEmails(emails, groupId, password):
         msg['From'] = fromaddr
         msg['To'] = email  
         msg['Subject'] = "Join Our CuisineArena Group"
-        body = "https://limitless-shore-47477.herokuapp.com/CuisineArena/welcome/joinGroup?groupId=%s" % (groupId)
+        body = "https://protected-woodland-52405.herokuapp.com/CuisineArena/welcome/joinGroup?groupId=%s" % (groupId)
         msg.attach(MIMEText(body, 'plain')) 
         text = msg.as_string()
         server.sendmail(fromaddr, email, text)
