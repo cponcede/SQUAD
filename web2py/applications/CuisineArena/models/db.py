@@ -126,10 +126,10 @@ db = DAL("sqlite://storage.sqlite")
 db.define_table('image', Field('title', unique=True), Field('file', 'upload'), Field('foursquareId'), format = '%(title)s %(foursquareId)', fake_migrate = True)
 db.image.title.requires = IS_NOT_IN_DB(db, db.image.title)
 
-db.define_table('user', Field('username', unique=True, notnull=True), Field('password', notnull=True), format = '%(user)s', fake_migrate = True)
-db.define_table('cuisine', Field('username'), Field('cuisineId'), Field('cuisine'), Field('rating', default=1500), fake_migrate = True)
-db.define_table('group1', Field('groupId'), Field('password'), Field('zipcode'), Field('price'), Field('distance'), fake_migrate = True) #I guess group is a restricted keyword
-db.define_table('userGroup', Field('username'), Field('groupId'), Field('completed', default=False), fake_migrate = True)
+db.define_table('user', Field('username', unique=True, notnull=True), Field('password', notnull=True), format = '%(user)s')
+db.define_table('cuisine', Field('username'), Field('cuisineId'), Field('cuisine'), Field('rating', default=1500))
+db.define_table('group1', Field('groupId'), Field('password'), Field('zipcode'), Field('price'), Field('distance')) #I guess group is a restricted keyword
+db.define_table('userGroup', Field('username'), Field('groupId'), Field('completed', default=False))
 #db.person.drop()
 # More API examples for controllers:
 #
