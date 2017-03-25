@@ -144,8 +144,8 @@ def joinGroup():
         if user:
             if user.password == request.vars.signinpassword:
                 groupRow = db((db.group1.groupId == session.groupId)).select().first()
-                db.userGroup.insert(username = session.name, groupId = session.groupId, completed = False)
                 session.name = request.vars.signin
+                db.userGroup.insert(username = session.name, groupId = session.groupId, completed = False)
                 session.new_user = False
                 session.zipCode = groupRow.zipcode
                 session.maxDistanceInMiles = groupRow.distance
